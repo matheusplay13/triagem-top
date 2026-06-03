@@ -1,4 +1,4 @@
-# Health Flow
+# Sistema de Triagem e Fila Inteligente
 
 SISTEMA DE TRIAGEM E FILA INTELIGENTE PARA UNIDADES DE SAÚDE
 
@@ -33,21 +33,22 @@ Além disso, muitos locais ainda utilizam métodos manuais ou pouco eficientes, 
 
 3. Objetivo
 
-3.1 Objetivo Geral
+Objetivo Geral:
 
-Desenvolver um sistema web capaz de gerenciar filas de atendimento com base em critérios de prioridade definidos por triagem.
+- Desenvolver um sistema web capaz de gerenciar filas de atendimento com base em critérios de prioridade definidos por triagem.
 
-3.2 Objetivos Específicos
 
-Criar um sistema de cadastro de pacientes
+Objetivos Específicos:
 
-Implementar um mecanismo de triagem com classificação de risco
+- Criar um sistema de cadastro de pacientes
 
-Organizar automaticamente a fila de atendimento
+- Implementar um mecanismo de triagem com classificação de risco
 
-Desenvolver um painel de visualização em tempo real
+- Organizar automaticamente a fila de atendimento
 
-Gerar relatórios e métricas de atendimento
+- Desenvolver um painel de visualização em tempo real
+
+- Gerar relatórios e métricas de atendimento
 
 
 
@@ -56,15 +57,15 @@ Gerar relatórios e métricas de atendimento
 
 A implementação de um sistema inteligente de filas pode trazer benefícios significativos, como:
 
-Otimização do atendimento
+- Otimização do atendimento
 
-Redução do tempo de espera
+- Redução do tempo de espera
 
-Priorização de casos urgentes
+- Priorização de casos urgentes
 
-Melhoria na organização interna
+- Melhoria na organização interna
 
-Base de dados para tomada de decisão
+- Base de dados para tomada de decisão
 
 Além disso, o projeto permite a aplicação prática de conceitos de desenvolvimento de software, banco de dados e arquitetura de sistemas.
 
@@ -224,14 +225,3 @@ Espera-se que o sistema:
 12. Conclusão
 
 O desenvolvimento de um sistema de triagem e fila inteligente representa uma solução tecnológica relevante para um problema real enfrentado na área da saúde. Além de contribuir para a melhoria do atendimento, o projeto permite a aplicação prática de conhecimentos técnicos fundamentais na área de Análise e Desenvolvimento de Sistemas.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
