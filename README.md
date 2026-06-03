@@ -1,11 +1,6 @@
 # Health Flow
 
-eu quero que faça um codigo no wirdsurf desse app 
-
-
-
 SISTEMA DE TRIAGEM E FILA INTELIGENTE PARA UNIDADES DE SAÚDE
-
 
 
 
@@ -15,7 +10,6 @@ SISTEMA DE TRIAGEM E FILA INTELIGENTE PARA UNIDADES DE SAÚDE
 A tecnologia da informação tem desempenhado um papel fundamental na melhoria de processos em diversas áreas, especialmente na saúde. Um dos principais desafios enfrentados por clínicas e unidades de atendimento é a organização de filas e a priorização adequada de pacientes.
 
 Este trabalho propõe o desenvolvimento de um sistema web de triagem e gerenciamento de filas inteligente, com o objetivo de melhorar o fluxo de atendimento, reduzir o tempo de espera e proporcionar uma experiência mais eficiente tanto para pacientes quanto para profissionais da saúde.
-
 
 
 
@@ -33,7 +27,6 @@ Falta de organização no fluxo de pacientes
 Insatisfação dos usuários
 
 Além disso, muitos locais ainda utilizam métodos manuais ou pouco eficientes, como anotações em papel ou sistemas desatualizados.
-
 
 
 
@@ -59,7 +52,6 @@ Gerar relatórios e métricas de atendimento
 
 
 
-
 4. Justificativa
 
 A implementação de um sistema inteligente de filas pode trazer benefícios significativos, como:
@@ -79,61 +71,37 @@ Além disso, o projeto permite a aplicação prática de conceitos de desenvolvi
 
 
 
-
 5. Tecnologias Utilizadas
 
 O sistema será desenvolvido utilizando tecnologias modernas amplamente utilizadas no mercado.
 
-5.1 Front-end
+Front-end:
 
-React
+- React
 
-Tailwind CSS
-
-Responsável pela interface do usuário, incluindo telas de cadastro, painel de atendimento e dashboard.
+- Tailwind CSS
 
 
+Back-end:
+
+- Node.js
+
+- Express
 
 
+Banco de Dados:
 
-5.2 Back-end
-
-Node.js
-
-Express
-
-Responsável pela lógica do sistema, controle da fila, regras de prioridade e comunicação com o banco de dados.
+- MySQL
 
 
+Comunicação em Tempo Real:
+
+- Socket.IO
 
 
+Autenticação:
 
-5.3 Banco de Dados
-
-MySQL
-
-Utilizado para armazenamento estruturado de dados como pacientes, atendimentos, usuários e histórico.
-
-
-
-
-
-5.4 Comunicação em Tempo Real
-
-Socket.IO
-
-Permite atualização automática da fila e dos painéis sem necessidade de recarregar a página.
-
-
-
-
-
-5.5 Autenticação
-
-JSON Web Token (JWT)
-
-Utilizado para controle de acesso ao sistema.
-
+- JSON Web Token (JWT)
 
 
 
@@ -157,47 +125,45 @@ O profissional chama o próximo paciente conforme prioridade
 
 
 
-
 7. Lógica de Prioridade (Triagem)
 
 A triagem será baseada em critérios como:
 
-Idade do paciente
+- Idade do paciente
 
-Gravidade dos sintomas
+- Gravidade dos sintomas
 
-Tempo de espera
+- Tempo de espera
+
 
 Classificação:
 
-Alta prioridade (urgente)
+- Alta prioridade (urgente)
 
-Média prioridade
+- Média prioridade
 
-Baixa prioridade
+- Baixa prioridade
 
 Essa lógica garante que pacientes em estado mais crítico sejam atendidos primeiro.
 
 
 
 
-
 8. Funcionalidades do Sistema
 
-Cadastro de pacientes
+- Cadastro de pacientes
 
-Registro de triagem
+- Registro de triagem
 
-Fila inteligente automática
+- Fila inteligente automática
 
-Painel de chamada
+- Painel de chamada
 
-Dashboard com métricas
+- Dashboard com métricas
 
-Controle de usuários
+- Controle de usuários
 
-Histórico de atendimentos
-
+- Histórico de atendimentos
 
 
 
@@ -206,22 +172,21 @@ Histórico de atendimentos
 
 O desenvolvimento do sistema será dividido nas seguintes etapas:
 
-Levantamento de requisitos
+- Levantamento de requisitos
 
-Modelagem do banco de dados
+- Modelagem do banco de dados
 
-Desenvolvimento do back-end
+- Desenvolvimento do back-end
 
-Desenvolvimento do front-end
+- Desenvolvimento do front-end
 
-Integração entre sistemas
+- Integração entre sistemas
 
-Implementação de tempo real
+- Implementação de tempo real
 
-Testes e validação
+- Testes e validação
 
-Deploy da aplicação
-
+- Deploy da aplicação
 
 
 
@@ -230,22 +195,13 @@ Deploy da aplicação
 
 O sistema possui potencial comercial e pode ser monetizado de diversas formas:
 
-10.1 Modelo SaaS (Software como Serviço)
+- Modelo SaaS (Software como Serviço)
 
-Cobrança mensal para utilização do sistema por clínicas.
+- Venda direta
 
-10.2 Venda direta
+- Personalização
 
-Licenciamento do sistema para empresas ou consultórios.
-
-10.3 Personalização
-
-Cobrança por funcionalidades específicas solicitadas por clientes.
-
-10.4 Suporte técnico
-
-Cobrança por manutenção e suporte contínuo.
-
+- Suporte técnico
 
 
 
@@ -254,14 +210,13 @@ Cobrança por manutenção e suporte contínuo.
 
 Espera-se que o sistema:
 
-Melhore a organização do atendimento
+- Melhore a organização do atendimento
 
-Reduza o tempo médio de espera
+- Reduza o tempo médio de espera
 
-Aumente a eficiência do fluxo de pacientes
+- Aumente a eficiência do fluxo de pacientes
 
-Proporcione dados para análise e melhoria contínua
-
+- Proporcione dados para análise e melhoria contínua
 
 
 
@@ -269,16 +224,6 @@ Proporcione dados para análise e melhoria contínua
 12. Conclusão
 
 O desenvolvimento de um sistema de triagem e fila inteligente representa uma solução tecnológica relevante para um problema real enfrentado na área da saúde. Além de contribuir para a melhoria do atendimento, o projeto permite a aplicação prática de conhecimentos técnicos fundamentais na área de Análise e Desenvolvimento de Sistemas.
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/41c7ea79-c140-4240-9a77-45e237c46f68).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
