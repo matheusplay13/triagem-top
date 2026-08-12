@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { Activity, ClipboardList, LayoutDashboard, Tv } from "lucide-react";
+import { ClipboardList, LayoutDashboard, Tv } from "lucide-react";
+import logo from "@/assets/sem-espera-logo.png.asset.json";
 
 const links = [
   { to: "/", label: "Triagem", icon: ClipboardList },
@@ -11,15 +12,14 @@ export function AppNav() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Link to="/" className="flex items-center gap-2">
-          <div
-            className="flex h-9 w-9 items-center justify-center rounded-lg text-primary-foreground"
-            style={{ background: "var(--gradient-hero)" }}
-          >
-            <Activity className="h-5 w-5" />
-          </div>
+        <Link to="/" className="flex items-center gap-2.5">
+          <img
+            src={logo.url}
+            alt="Sem Espera — triagem e fila inteligente"
+            className="h-10 w-auto"
+          />
           <div className="leading-tight">
-            <div className="text-sm font-bold tracking-tight">TriageFlow</div>
+            <div className="text-sm font-bold tracking-tight">Sem Espera</div>
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">
               Fila Inteligente
             </div>
