@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ClipboardList, LayoutDashboard, Tv } from "lucide-react";
-import logo from "@/assets/sem-espera-logo.png.asset.json";
+import logo from "@/assets/sem-espera.png";
 
 const links = [
   { to: "/", label: "Triagem", icon: ClipboardList },
@@ -14,7 +14,7 @@ export function AppNav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
         <Link to="/" className="flex items-center gap-2.5">
           <img
-            src={logo.url}
+            src={logo}
             alt="Sem Espera — triagem e fila inteligente"
             className="h-10 w-auto"
           />
