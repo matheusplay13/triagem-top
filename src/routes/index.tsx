@@ -147,17 +147,27 @@ function TriagePage() {
             </Field>
 
             <div>
-              <label className="mb-2 flex items-center justify-between text-sm font-medium">
+              <label className="mb-3 flex items-center justify-between text-sm font-medium">
                 <span>Nível de dor</span>
-                <span className="text-primary font-bold">{painLevel}/10</span>
+                <span 
+                  className={`flex h-7 items-center justify-center rounded-md px-3 font-bold text-white transition-colors
+                    ${painLevel <= 4 ? 'bg-priority-low' : painLevel <= 7 ? 'bg-priority-medium' : 'bg-priority-high'}
+                  `}
+                >
+                  {painLevel} / 10
+                </span>
               </label>
               <input
                 type="range" min={0} max={10} value={painLevel}
                 onChange={(e) => setPainLevel(Number(e.target.value))}
-                className="w-full accent-primary"
+                style={{ "--progress": `${painLevel * 10}%` } as any}
+                className={`range-input w-full cursor-pointer transition-all
+                  ${painLevel <= 4 ? 'text-priority-low' : painLevel <= 7 ? 'text-priority-medium' : 'text-priority-high'}
+                `}
               />
-              <div className="mt-1 flex justify-between text-[10px] uppercase tracking-wider text-muted-foreground">
-                <span>Sem dor</span><span>Insuportável</span>
+              <div className="mt-2 flex justify-between text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                <span className={painLevel === 0 ? "text-foreground font-bold" : ""}>Sem dor</span>
+                <span className={painLevel === 10 ? "text-destructive font-bold" : ""}>Insuportável</span>
               </div>
             </div>
 
@@ -211,6 +221,41 @@ function TriagePage() {
         .input:focus {
           border-color: var(--color-ring);
           box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-ring) 20%, transparent);
+        }
+        .range-input {
+          -webkit-appearance: none;
+          appearance: none;
+          height: 0.6rem;
+          border-radius: 9999px;
+          background: linear-gradient(to right, currentColor var(--progress, 0%), var(--color-muted) var(--progress, 0%));
+          outline: none;
+        }
+        .range-input::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 1.35rem;
+          height: 1.35rem;
+          border-radius: 50%;
+          background: currentColor;
+          cursor: pointer;
+          transition: transform 0.15s;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .range-input::-webkit-slider-thumb:hover {
+          transform: scale(1.15);
+        }
+        .range-input::-moz-range-thumb {
+          width: 1.35rem;
+          height: 1.35rem;
+          border-radius: 50%;
+          background: currentColor;
+          cursor: pointer;
+          transition: transform 0.15s;
+          border: none;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .range-input::-moz-range-thumb:hover {
+          transform: scale(1.15);
         }
       `}</style>
     </div>
