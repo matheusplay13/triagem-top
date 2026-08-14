@@ -5,6 +5,7 @@ import { PriorityBadge } from "@/components/PriorityBadge";
 import {
   callNext, finishPatient, removePatient, sortedQueue, usePatients,
 } from "@/lib/triage-store";
+import { useAuth } from "@/lib/auth-store";
 import { BellRing, CheckCircle2, Clock, UserMinus, Volume2 } from "lucide-react";
 
 export const Route = createFileRoute("/queue")({
@@ -35,6 +36,7 @@ function formatWait(ms: number) {
 }
 
 function QueuePage() {
+  const isAuth = useAuth();
   const patients = usePatients();
   const now = useNow();
   const queue = sortedQueue(patients);
@@ -51,15 +53,18 @@ function QueuePage() {
               {queue.length} aguardando · {inService.length} em atendimento
             </p>
           </div>
-          <button
-            onClick={() => callNext()}
-            disabled={queue.length === 0}
-            className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90"
-            style={{ boxShadow: queue.length ? "var(--shadow-soft)" : undefined }}
-          >
-            <BellRing className="h-4 w-4" />
-            Chamar próximo
-          </button>
+          {isAuth && (
+            <button
+              onClick={() => callNext()}
+              disabled={queue.length === 0}
+              className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90"
+              style={{ boxShadow: queue.length ? "var(--shadow-soft)" : undefined }}
+            >
+              <BellRing className="h-4 w-4" />
+              Chamar próximo
+            </button>
+          )}
+
         </div>
 
         {/* Now serving */}
@@ -78,12 +83,15 @@ function QueuePage() {
               <div className="mt-1 truncate text-base font-semibold">{p.name}</div>
               <div className="mt-3 flex items-center justify-between">
                 <PriorityBadge priority={p.priority} size="sm" />
-                <button
-                  onClick={() => finishPatient(p.id)}
-                  className="inline-flex items-center gap-1 rounded-md bg-success px-3 py-1.5 text-xs font-semibold text-success-foreground hover:opacity-90"
-                >
-                  <CheckCircle2 className="h-3.5 w-3.5" /> Finalizar
-                </button>
+                {isAuth && (
+                  <button
+                    onClick={() => finishPatient(p.id)}
+                    className="inline-flex items-center gap-1 rounded-md bg-success px-3 py-1.5 text-xs font-semibold text-success-foreground hover:opacity-90"
+                  >
+                    <CheckCircle2 className="h-3.5 w-3.5" /> Finalizar
+                  </button>
+                )}
+
               </div>
             </div>
           ))}
@@ -122,13 +130,16 @@ function QueuePage() {
                     {formatWait(now - p.arrivedAt)}
                   </div>
                   <PriorityBadge priority={p.priority} size="sm" />
-                  <button
-                    onClick={() => removePatient(p.id)}
-                    title="Remover da fila"
-                    className="text-muted-foreground hover:text-destructive"
-                  >
-                    <UserMinus className="h-4 w-4" />
-                  </button>
+                  {isAuth && (
+                    <button
+                      onClick={() => removePatient(p.id)}
+                      title="Remover da fila"
+                      className="text-muted-foreground hover:text-destructive"
+                    >
+                      <UserMinus className="h-4 w-4" />
+                    </button>
+                  )}
+
                 </li>
               ))}
             </ol>

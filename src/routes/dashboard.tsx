@@ -3,6 +3,9 @@ import { AppNav } from "@/components/AppNav";
 import { PriorityBadge } from "@/components/PriorityBadge";
 import { clearAll, usePatients, type Priority } from "@/lib/triage-store";
 import { Activity, AlertTriangle, CheckCircle2, Trash2, Users } from "lucide-react";
+import { useAuth } from "@/lib/auth-store";
+import { useNavigate } from "@tanstack/react-router";
+
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -20,7 +23,15 @@ function avgWait(durations: number[]) {
 }
 
 function DashboardPage() {
+  const navigate = useNavigate();
+  const isAuth = useAuth();
   const patients = usePatients();
+
+  if (typeof window !== "undefined" && !isAuth) {
+    navigate({ to: "/login", replace: true });
+    return null;
+  }
+
   const waiting = patients.filter((p) => p.status === "waiting");
   const inService = patients.filter((p) => p.status === "in_service");
   const done = patients.filter((p) => p.status === "done");
