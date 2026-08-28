@@ -59,7 +59,7 @@ function DashboardPage() {
           </div>
           {patients.length > 0 && (
             <button
-              onClick={() => confirm("Limpar todos os dados?") && clearAll()}
+              onClick={async () => { if (confirm("Limpar todos os dados?")) await clearAll(); }}
               className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-muted-foreground hover:bg-muted hover:text-destructive"
             >
               <Trash2 className="h-3.5 w-3.5" /> Limpar tudo

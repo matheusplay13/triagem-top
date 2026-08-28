@@ -36,10 +36,10 @@ function PatientIntakePage() {
     setDone(null);
   }
 
-  function submit(e: React.FormEvent) {
+  async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!valid) return;
-    const p = addPatient({
+    const p = await addPatient({
       name: name.trim(), age: ageNum, document: doc.trim(), symptoms: symptoms.trim(),
       painLevel, hasFever, hasBreathingIssue: hasBreathing, hasChestPain,
     });

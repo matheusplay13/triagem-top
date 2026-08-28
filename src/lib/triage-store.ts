@@ -1,4 +1,11 @@
-import { useSyncExternalStore } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  getPatientsFn,
+  createPatientFn,
+  updatePatientStatusFn,
+  removePatientFn,
+  clearAllFn,
+} from "./api/triage.functions";
 
 export type Priority = "high" | "medium" | "low";
 export type PatientStatus = "waiting" | "in_service" | "done";
@@ -9,7 +16,7 @@ export interface Patient {
   age: number;
   document: string;
   symptoms: string;
-  painLevel: number; // 0-10
+  painLevel: number;
   hasFever: boolean;
   hasBreathingIssue: boolean;
   hasChestPain: boolean;
@@ -21,59 +28,22 @@ export interface Patient {
   ticket: string;
 }
 
-const STORAGE_KEY = "triage-queue-v1";
-const COUNTER_KEY = "triage-counter-v1";
-
-function load(): Patient[] {
-  if (typeof window === "undefined") return [];
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? (JSON.parse(raw) as Patient[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-function save(list: Patient[]) {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-}
-
-let state: Patient[] = load();
-const listeners = new Set<() => void>();
-
-function emit() {
-  save(state);
-  listeners.forEach((l) => l());
-}
-
-if (typeof window !== "undefined") {
-  window.addEventListener("storage", (e) => {
-    if (e.key === STORAGE_KEY) {
-      state = load();
-      listeners.forEach((l) => l());
-    }
-  });
-}
-
-export function subscribe(l: () => void) {
-  listeners.add(l);
-  return () => listeners.delete(l);
-}
-
-export function getSnapshot(): Patient[] {
-  return state;
-}
-
 export function usePatients(): Patient[] {
-  return useSyncExternalStore(subscribe, getSnapshot, () => []);
-}
+  const { data } = useQuery({
+    queryKey: ["patients"],
+    queryFn: () => getPatientsFn(),
+    refetchInterval: 2000, // Atualiza a cada 2 segundos
+  });
 
-function nextTicket(): string {
-  if (typeof window === "undefined") return "T001";
-  const n = Number(localStorage.getItem(COUNTER_KEY) || "0") + 1;
-  localStorage.setItem(COUNTER_KEY, String(n));
-  return `T${String(n).padStart(3, "0")}`;
+  // Normalizamos as datas do Prisma (strings iso) para timestamps (numbers) como o frontend espera
+  return (data ?? []).map((p) => ({
+    ...p,
+    priority: p.priority as Priority,
+    status: p.status as PatientStatus,
+    arrivedAt: new Date(p.arrivedAt).getTime(),
+    calledAt: p.calledAt ? new Date(p.calledAt).getTime() : undefined,
+    finishedAt: p.finishedAt ? new Date(p.finishedAt).getTime() : undefined,
+  }));
 }
 
 export interface TriageInput {
@@ -88,30 +58,25 @@ export interface TriageInput {
 }
 
 export function classifyPriority(t: TriageInput): Priority {
-  // Critical red flags
   if (t.hasChestPain || t.hasBreathingIssue || t.painLevel >= 8) return "high";
   if (t.age >= 65 || t.age <= 2) return "high";
   if (t.hasFever && t.painLevel >= 5) return "high";
-
   if (t.painLevel >= 5 || t.hasFever) return "medium";
   if (t.age >= 60) return "medium";
-
   return "low";
 }
 
-export function addPatient(input: TriageInput): Patient {
+export async function addPatient(input: TriageInput): Promise<Patient> {
   const priority = classifyPriority(input);
-  const patient: Patient = {
-    id: crypto.randomUUID(),
-    ...input,
-    priority,
-    status: "waiting",
-    arrivedAt: Date.now(),
-    ticket: nextTicket(),
+  const result = await createPatientFn({
+    data: { ...input, priority },
+  });
+  return {
+    ...result,
+    priority: result.priority as Priority,
+    status: result.status as PatientStatus,
+    arrivedAt: new Date(result.arrivedAt).getTime(),
   };
-  state = [...state, patient];
-  emit();
-  return patient;
 }
 
 const priorityRank: Record<Priority, number> = { high: 0, medium: 1, low: 2 };
@@ -127,33 +92,23 @@ export function sortedQueue(list: Patient[]): Patient[] {
     });
 }
 
-export function callNext(): Patient | null {
-  const queue = sortedQueue(state);
-  if (!queue.length) return null;
+export async function callNext(patients: Patient[]): Promise<void> {
+  const queue = sortedQueue(patients);
+  if (!queue.length) return;
   const next = queue[0];
-  state = state.map((p) =>
-    p.id === next.id ? { ...p, status: "in_service", calledAt: Date.now() } : p,
-  );
-  emit();
-  return next;
+  await updatePatientStatusFn({ data: { id: next.id, status: "in_service" } });
 }
 
-export function finishPatient(id: string) {
-  state = state.map((p) =>
-    p.id === id ? { ...p, status: "done", finishedAt: Date.now() } : p,
-  );
-  emit();
+export async function finishPatient(id: string): Promise<void> {
+  await updatePatientStatusFn({ data: { id, status: "done" } });
 }
 
-export function removePatient(id: string) {
-  state = state.filter((p) => p.id !== id);
-  emit();
+export async function removePatient(id: string): Promise<void> {
+  await removePatientFn({ data: { id } });
 }
 
-export function clearAll() {
-  state = [];
-  if (typeof window !== "undefined") localStorage.removeItem(COUNTER_KEY);
-  emit();
+export async function clearAll(): Promise<void> {
+  await clearAllFn();
 }
 
 export const priorityLabel: Record<Priority, string> = {

@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id                String    @id @default(uuid())
+  ticket            String    @db.VarChar(20)
+  name              String    @db.VarChar(255)
+  age               Int
+  document          String    @db.VarChar(50)
+  symptoms          String    @db.Text
+  painLevel         Int
+  hasFever          Boolean
+  hasBreathingIssue Boolean
+  hasChestPain      Boolean
+  priority          String    @db.VarChar(20) // alto, medio, baixo
+  status            String    @default("waiting") @db.VarChar(20) // aguardando, em_atendimento, finalizado
+  arrivedAt         DateTime  @default(now())
+  calledAt          DateTime?
+  finishedAt        DateTime?
+
+  @@map("patients")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(255)
+  email     String   @unique @db.VarChar(255)
+  password  String   @db.VarChar(255)
+  role      String   @default("nurse") @db.VarChar(50)
+  createdAt DateTime @default(now())
+
+  @@map("users")
+}
