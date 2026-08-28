@@ -55,7 +55,7 @@ function QueuePage() {
           </div>
           {isAuth && (
             <button
-              onClick={() => callNext()}
+              onClick={async () => await callNext(patients)}
               disabled={queue.length === 0}
               className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-50 hover:opacity-90"
               style={{ boxShadow: queue.length ? "var(--shadow-soft)" : undefined }}
@@ -85,7 +85,7 @@ function QueuePage() {
                 <PriorityBadge priority={p.priority} size="sm" />
                 {isAuth && (
                   <button
-                    onClick={() => finishPatient(p.id)}
+                    onClick={async () => await finishPatient(p.id)}
                     className="inline-flex items-center gap-1 rounded-md bg-success px-3 py-1.5 text-xs font-semibold text-success-foreground hover:opacity-90"
                   >
                     <CheckCircle2 className="h-3.5 w-3.5" /> Finalizar
@@ -132,7 +132,7 @@ function QueuePage() {
                   <PriorityBadge priority={p.priority} size="sm" />
                   {isAuth && (
                     <button
-                      onClick={() => removePatient(p.id)}
+                      onClick={async () => await removePatient(p.id)}
                       title="Remover da fila"
                       className="text-muted-foreground hover:text-destructive"
                     >
