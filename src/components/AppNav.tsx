@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Smartphone, LayoutDashboard, Tv, LogOut } from "lucide-react";
+import { Smartphone, LayoutDashboard, Tv, LogOut, Star } from "lucide-react";
 import logo from "@/assets/sem-espera.png";
 import { useAuth, logout } from "@/lib/auth-store";
 
@@ -10,6 +10,7 @@ export function AppNav() {
     { to: "/", label: "Meu Atendimento", icon: Smartphone, show: true },
     { to: "/queue", label: "Telão de Senhas", icon: Tv, show: true },
     { to: "/dashboard", label: "Recepção / Médico", icon: LayoutDashboard, show: isAuth },
+    { to: "/planos", label: "Planos", icon: Star, show: true },
   ];
 
   return (
