@@ -18,8 +18,8 @@ model Patient {
   hasFever          Boolean
   hasBreathingIssue Boolean
   hasChestPain      Boolean
-  priority          String    @db.VarChar(20) // alto, medio, baixo
-  status            String    @default("waiting") @db.VarChar(20) // aguardando, em_atendimento, finalizado
+  priority          String    @db.VarChar(20)
+  status            String    @default("waiting") @db.VarChar(20)
   arrivedAt         DateTime  @default(now())
   calledAt          DateTime?
   finishedAt        DateTime?
