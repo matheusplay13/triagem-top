@@ -1,15 +1,19 @@
 import { Link } from "@tanstack/react-router";
-import { Smartphone, LayoutDashboard, Tv, LogOut } from "lucide-react";
+import { Smartphone, LayoutDashboard, Tv, LogOut, Building2, LogIn } from "lucide-react";
 import logo from "@/assets/sem-espera.png";
-import { useAuth, logout } from "@/lib/auth-store";
+import { useSession, logout } from "@/lib/auth-store";
 
 export function AppNav() {
-  const isAuth = useAuth();
+  const session = useSession();
+  const isAuth = !!session;
+  const isAdmin = session?.user.role === "admin";
 
   const links = [
     { to: "/", label: "Meu Atendimento", icon: Smartphone, show: true },
     { to: "/queue", label: "Telão de Senhas", icon: Tv, show: true },
     { to: "/dashboard", label: "Recepção / Médico", icon: LayoutDashboard, show: isAuth },
+    { to: "/clinica", label: "Gestão da Clínica", icon: Building2, show: isAdmin },
+    { to: "/login", label: "Área da Clínica", icon: LogIn, show: !isAuth },
   ];
 
   return (
