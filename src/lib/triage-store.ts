@@ -76,6 +76,8 @@ export async function addPatient(input: TriageInput): Promise<Patient> {
     priority: result.priority as Priority,
     status: result.status as PatientStatus,
     arrivedAt: new Date(result.arrivedAt).getTime(),
+    calledAt: undefined,
+    finishedAt: undefined,
   };
 }
 

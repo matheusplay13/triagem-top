@@ -10,6 +10,8 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CadastroClinicaRouteImport } from './routes/cadastro-clinica'
+import { Route as ClinicaRouteImport } from './routes/clinica'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PlanosRouteImport } from './routes/planos'
@@ -18,6 +20,16 @@ import { Route as QueueRouteImport } from './routes/queue'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CadastroClinicaRoute = CadastroClinicaRouteImport.update({
+  id: '/cadastro-clinica',
+  path: '/cadastro-clinica',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClinicaRoute = ClinicaRouteImport.update({
+  id: '/clinica',
+  path: '/clinica',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardRoute = DashboardRouteImport.update({
@@ -43,6 +55,8 @@ const QueueRoute = QueueRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cadastro-clinica': typeof CadastroClinicaRoute
+  '/clinica': typeof ClinicaRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/planos': typeof PlanosRoute
@@ -50,6 +64,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cadastro-clinica': typeof CadastroClinicaRoute
+  '/clinica': typeof ClinicaRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/planos': typeof PlanosRoute
@@ -58,6 +74,8 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cadastro-clinica': typeof CadastroClinicaRoute
+  '/clinica': typeof ClinicaRoute
   '/dashboard': typeof DashboardRoute
   '/login': typeof LoginRoute
   '/planos': typeof PlanosRoute
@@ -65,14 +83,38 @@ export interface FileRoutesById {
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/dashboard' | '/login' | '/planos' | '/queue'
+  fullPaths:
+    | '/'
+    | '/cadastro-clinica'
+    | '/clinica'
+    | '/dashboard'
+    | '/login'
+    | '/planos'
+    | '/queue'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/dashboard' | '/login' | '/planos' | '/queue'
-  id: '__root__' | '/' | '/dashboard' | '/login' | '/planos' | '/queue'
+  to:
+    | '/'
+    | '/cadastro-clinica'
+    | '/clinica'
+    | '/dashboard'
+    | '/login'
+    | '/planos'
+    | '/queue'
+  id:
+    | '__root__'
+    | '/'
+    | '/cadastro-clinica'
+    | '/clinica'
+    | '/dashboard'
+    | '/login'
+    | '/planos'
+    | '/queue'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CadastroClinicaRoute: typeof CadastroClinicaRoute
+  ClinicaRoute: typeof ClinicaRoute
   DashboardRoute: typeof DashboardRoute
   LoginRoute: typeof LoginRoute
   PlanosRoute: typeof PlanosRoute
@@ -86,6 +128,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cadastro-clinica': {
+      id: '/cadastro-clinica'
+      path: '/cadastro-clinica'
+      fullPath: '/cadastro-clinica'
+      preLoaderRoute: typeof CadastroClinicaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clinica': {
+      id: '/clinica'
+      path: '/clinica'
+      fullPath: '/clinica'
+      preLoaderRoute: typeof ClinicaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dashboard': {
@@ -121,6 +177,8 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CadastroClinicaRoute: CadastroClinicaRoute,
+  ClinicaRoute: ClinicaRoute,
   DashboardRoute: DashboardRoute,
   LoginRoute: LoginRoute,
   PlanosRoute: PlanosRoute,

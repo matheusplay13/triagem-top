@@ -27,14 +27,33 @@ model Patient {
   @@map("patients")
 }
 
+model Clinic {
+  id        String   @id @default(uuid())
+  name      String   @db.VarChar(255)
+  cnpj      String?  @db.VarChar(20)
+  phone     String?  @db.VarChar(30)
+  address   String?  @db.VarChar(255)
+  plan      String   @default("free") @db.VarChar(50)
+  createdAt DateTime @default(now())
+  users     User[]
+
+  @@map("clinics")
+}
+
 model User {
   id        String   @id @default(uuid())
   name      String   @db.VarChar(255)
   email     String   @unique @db.VarChar(255)
   password  String   @db.VarChar(255)
-  role      String   @default("nurse") @db.VarChar(50)
+  role      String   @default("nurse") @db.VarChar(50) // admin (gestor da clínica), doctor
+  specialty String?  @db.VarChar(100)
+  crm       String?  @db.VarChar(30)
+  active    Boolean  @default(true)
   plan      String   @default("free") @db.VarChar(50)
   createdAt DateTime @default(now())
+  clinicId  String?
+  clinic    Clinic?  @relation(fields: [clinicId], references: [id], onDelete: Cascade)
 
+  @@index([clinicId])
   @@map("users")
 }
