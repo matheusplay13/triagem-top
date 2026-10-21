@@ -1,6 +1,6 @@
 # Sem Espera — Sistema Inteligente de Triagem e Fila
 
-> # ⚠️ ATENÇÃO: ESTE PROJETO É APENAS UM PROTÓTIPO!
+> # ATENÇÃO: ESTE PROJETO É APENAS UM PROTÓTIPO!
 > **Este sistema está em fase de validação e desenvolvimento inicial. Funcionalidades, arquitetura e fluxo de telas podem (e vão) sofrer grandes mudanças a qualquer momento. Não o utilize ainda em ambientes de produção.**
 
 ---
