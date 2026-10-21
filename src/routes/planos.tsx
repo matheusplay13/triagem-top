@@ -83,15 +83,7 @@ function PlanosPage() {
                 <span className="text-sm font-medium text-muted-foreground"> / mês</span>
               </div>
               
-              <button
-                className={`mb-8 w-full rounded-xl py-3.5 text-sm font-bold transition-all active:scale-95 ${
-                  plan.popular
-                    ? "bg-primary text-primary-foreground hover:opacity-90 shadow-lg shadow-primary/25"
-                    : "bg-muted text-foreground hover:bg-muted/80 border border-border"
-                }`}
-              >
-                {plan.buttonText}
-              </button>
+
               
               <div className="flex-1 space-y-4">
                 <p className="text-xs font-bold tracking-widest text-foreground/70 uppercase">O que está incluído</p>
@@ -104,6 +96,16 @@ function PlanosPage() {
                   ))}
                 </ul>
               </div>
+
+              <button
+                className={`mt-8 w-full rounded-xl py-3.5 text-sm font-bold transition-all active:scale-95 ${
+                  plan.popular
+                    ? "bg-primary text-primary-foreground hover:opacity-90 shadow-lg shadow-primary/25"
+                    : "bg-muted text-foreground hover:bg-muted/80 border border-border"
+                }`}
+              >
+                {plan.buttonText}
+              </button>
             </div>
           ))}
         </div>

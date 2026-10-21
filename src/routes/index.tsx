@@ -242,6 +242,13 @@ function PatientIntakePage() {
           >
             Gerar minha senha digital
           </button>
+
+          <p className="text-center text-xs text-muted-foreground">
+            Quer usar em sua clínica?{" "}
+            <a href="/planos" className="font-medium text-primary underline-offset-4 hover:underline">
+              Ver planos e preços →
+            </a>
+          </p>
         </form>
       </main>
 
