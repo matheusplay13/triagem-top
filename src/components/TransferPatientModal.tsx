@@ -38,8 +38,8 @@ export function printTransferReport(report: TransferReportInput) {
   <meta charset="utf-8" />
   <title>Guia de Transferência ${report.protocol}</title>
   <style>
-    body { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding: 32px; color: #092c4c; line-height: 1.5; background: #f2fbff; }
-    pre { white-space: pre-wrap; font-size: 13px; border: 1.5px solid #8bd4f5; background: #fff; padding: 24px; border-radius: 14px; }
+    body { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding: 32px; color: #111; line-height: 1.5; }
+    pre { white-space: pre-wrap; font-size: 13px; border: 1px solid #ccc; padding: 24px; border-radius: 8px; }
   </style>
 </head>
 <body>
@@ -170,24 +170,27 @@ export function TransferPatientModal({
     setTimeout(() => setCopied(false), 2500);
   }
 
+  const inputCls =
+    "w-full rounded-xl border border-input bg-background px-3.5 py-2.5 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20";
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-sky-950/45 p-4 backdrop-blur-md"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/55 p-4 backdrop-blur-xs"
       role="dialog"
       aria-modal="true"
       aria-labelledby="transfer-modal-title"
     >
-      <div className="aero-glass max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl p-6">
+      <div className="max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl border border-border bg-card p-6 shadow-2xl">
         <div className="mb-5 flex items-start justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="aero-orb flex h-11 w-11 items-center justify-center rounded-2xl">
-              <ArrowLeftRight className="relative z-10 h-5 w-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
+              <ArrowLeftRight className="h-5 w-5" />
             </div>
             <div>
-              <h2 id="transfer-modal-title" className="text-lg font-extrabold text-sky-950">
+              <h2 id="transfer-modal-title" className="text-lg font-bold">
                 Transferir Paciente
               </h2>
-              <p className="text-xs font-medium text-muted-foreground">
+              <p className="text-xs text-muted-foreground">
                 Origem: {currentClinicName}
               </p>
             </div>
@@ -195,18 +198,18 @@ export function TransferPatientModal({
           <button
             type="button"
             onClick={onClose}
-            className="aero-btn-glass rounded-full p-2 text-sky-900"
+            className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
             aria-label="Fechar"
           >
-            <X className="h-4 w-4" />
+            <X className="h-5 w-5" />
           </button>
         </div>
 
         {/* Resumo do paciente */}
-        <div className="aero-glass-card mb-5 flex flex-wrap items-center justify-between gap-2 rounded-2xl px-4 py-3 text-sm">
+        <div className="mb-5 flex flex-wrap items-center justify-between gap-2 rounded-2xl border border-border bg-muted/40 px-4 py-3 text-sm">
           <div>
-            <span className="mr-2 font-black text-sky-700">{patient.ticket}</span>
-            <span className="font-extrabold text-sky-950">{patient.name}</span>
+            <span className="mr-2 font-black text-primary">{patient.ticket}</span>
+            <span className="font-bold">{patient.name}</span>
             <span className="ml-2 text-xs text-muted-foreground">{patient.age} anos</span>
           </div>
           <PriorityBadge priority={patient.priority} size="sm" />
@@ -214,13 +217,13 @@ export function TransferPatientModal({
 
         {completedReport ? (
           <div className="space-y-4">
-            <div className="flex items-start gap-3 rounded-2xl border border-emerald-400/70 bg-emerald-100/75 p-4 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
-              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
+            <div className="flex items-start gap-3 rounded-2xl border border-priority-low/30 bg-priority-low/10 p-4 text-sm">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-priority-low" />
               <div>
-                <p className="font-extrabold text-emerald-950">
+                <p className="font-bold text-foreground">
                   Transferência registrada — Protocolo {completedReport.protocol}
                 </p>
-                <p className="mt-1 text-xs text-emerald-900/85">
+                <p className="mt-1 text-xs text-muted-foreground">
                   {completedReport.destinationUsesSystem
                     ? `O paciente foi transferido eletronicamente para a fila de ${completedReport.destinationName} com os dados clínicos preservados.`
                     : `Como ${completedReport.destinationName} não utiliza o sistema Sem Espera, a senha foi encerrada nesta unidade como "Transferido". Utilize a guia abaixo para entrega presencial ou envio à equipe receptora.`}
@@ -228,7 +231,7 @@ export function TransferPatientModal({
               </div>
             </div>
 
-            <pre className="max-h-64 overflow-auto rounded-2xl border border-sky-200/90 bg-white/90 p-4 text-xs leading-relaxed text-sky-950 shadow-inner">
+            <pre className="max-h-64 overflow-auto rounded-2xl border border-border bg-background p-4 text-xs leading-relaxed text-foreground">
               {formatTransferReportText(completedReport)}
             </pre>
 
@@ -236,21 +239,16 @@ export function TransferPatientModal({
               <button
                 type="button"
                 onClick={() => printTransferReport(completedReport)}
-                className="aero-btn inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90"
               >
-                <Printer className="relative z-10 h-4 w-4" />
-                <span className="relative z-10">Imprimir Guia</span>
+                <Printer className="h-4 w-4" /> Imprimir Guia
               </button>
               <button
                 type="button"
                 onClick={handleCopy}
-                className="aero-btn-glass inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold"
+                className="inline-flex flex-1 items-center justify-center gap-2 rounded-xl border border-border bg-background px-4 py-2.5 text-sm font-bold hover:bg-muted"
               >
-                {copied ? (
-                  <Check className="h-4 w-4 text-emerald-600" />
-                ) : (
-                  <Copy className="h-4 w-4" />
-                )}
+                {copied ? <Check className="h-4 w-4 text-priority-low" /> : <Copy className="h-4 w-4" />}
                 {copied ? "Copiado" : "Copiar Resumo"}
               </button>
             </div>
@@ -258,7 +256,7 @@ export function TransferPatientModal({
             <button
               type="button"
               onClick={onClose}
-              className="aero-btn-glass w-full rounded-full py-2.5 text-sm font-bold"
+              className="w-full rounded-xl bg-muted py-2.5 text-sm font-semibold text-foreground hover:bg-muted/80"
             >
               Fechar
             </button>
@@ -267,7 +265,7 @@ export function TransferPatientModal({
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Tipo de hospital de destino */}
             <div>
-              <label className="mb-2 block text-xs font-extrabold uppercase tracking-wider text-sky-900/80">
+              <label className="mb-2 block text-xs font-bold uppercase tracking-wider text-muted-foreground">
                 O hospital de destino utiliza o sistema Sem Espera?
               </label>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -277,12 +275,14 @@ export function TransferPatientModal({
                     setUsesSystem(true);
                     setError(null);
                   }}
-                  className={`rounded-2xl p-3.5 text-left ${
-                    usesSystem ? "aero-tile-active" : "aero-tile"
+                  className={`rounded-2xl border p-3.5 text-left transition-all ${
+                    usesSystem
+                      ? "border-primary bg-primary/5 ring-2 ring-primary/25"
+                      : "border-border bg-background hover:border-primary/40"
                   }`}
                 >
-                  <div className="flex items-center gap-2 text-sm font-extrabold text-sky-950">
-                    <Building2 className="h-4 w-4 text-sky-600" />
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <Building2 className="h-4 w-4 text-primary" />
                     Sim, usa o Sem Espera
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
@@ -296,12 +296,14 @@ export function TransferPatientModal({
                     setUsesSystem(false);
                     setError(null);
                   }}
-                  className={`rounded-2xl p-3.5 text-left ${
-                    !usesSystem ? "aero-tile-active" : "aero-tile"
+                  className={`rounded-2xl border p-3.5 text-left transition-all ${
+                    !usesSystem
+                      ? "border-primary bg-primary/5 ring-2 ring-primary/25"
+                      : "border-border bg-background hover:border-primary/40"
                   }`}
                 >
-                  <div className="flex items-center gap-2 text-sm font-extrabold text-sky-950">
-                    <ExternalLink className="h-4 w-4 text-emerald-600" />
+                  <div className="flex items-center gap-2 text-sm font-bold">
+                    <ExternalLink className="h-4 w-4 text-primary" />
                     Não, hospital externo
                   </div>
                   <p className="mt-1 text-xs text-muted-foreground">
@@ -313,11 +315,11 @@ export function TransferPatientModal({
 
             {usesSystem ? (
               <div>
-                <label htmlFor="transfer-clinic" className="mb-1.5 block text-sm font-extrabold text-sky-950">
+                <label htmlFor="transfer-clinic" className="mb-1.5 block text-sm font-bold">
                   Hospital parceiro de destino *
                 </label>
                 {otherClinics.length === 0 ? (
-                  <div className="aero-glass-card rounded-2xl p-3.5 text-xs text-muted-foreground">
+                  <div className="rounded-xl border border-dashed border-border bg-muted/40 p-3 text-xs text-muted-foreground">
                     Não há outros hospitais cadastrados no sistema no momento. Selecione a opção{" "}
                     <strong>"Não, hospital externo"</strong> acima para registrar uma transferência
                     externa com guia clínica.
@@ -325,7 +327,7 @@ export function TransferPatientModal({
                 ) : (
                   <select
                     id="transfer-clinic"
-                    className="aero-input"
+                    className={inputCls}
                     value={toClinicId}
                     onChange={(e) => setToClinicId(e.target.value)}
                     required
@@ -341,17 +343,17 @@ export function TransferPatientModal({
                 )}
               </div>
             ) : (
-              <div className="aero-glass-card space-y-3 rounded-2xl p-4">
-                <p className="text-xs font-extrabold uppercase tracking-wider text-sky-900/75">
+              <div className="space-y-3 rounded-2xl border border-border bg-background p-4">
+                <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">
                   Dados do hospital externo (fora do sistema)
                 </p>
                 <div>
-                  <label htmlFor="ext-hospital-name" className="mb-1 block text-xs font-bold text-sky-950">
+                  <label htmlFor="ext-hospital-name" className="mb-1 block text-xs font-bold">
                     Nome do hospital de destino *
                   </label>
                   <input
                     id="ext-hospital-name"
-                    className="aero-input"
+                    className={inputCls}
                     placeholder="Ex: Hospital Municipal São Lucas"
                     value={externalName}
                     onChange={(e) => setExternalName(e.target.value)}
@@ -360,24 +362,24 @@ export function TransferPatientModal({
                 </div>
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div>
-                    <label htmlFor="ext-hospital-address" className="mb-1 block text-xs font-bold text-sky-950">
+                    <label htmlFor="ext-hospital-address" className="mb-1 block text-xs font-bold">
                       Endereço / Cidade
                     </label>
                     <input
                       id="ext-hospital-address"
-                      className="aero-input"
+                      className={inputCls}
                       placeholder="Ex: Av. Central, 500"
                       value={externalAddress}
                       onChange={(e) => setExternalAddress(e.target.value)}
                     />
                   </div>
                   <div>
-                    <label htmlFor="ext-hospital-phone" className="mb-1 block text-xs font-bold text-sky-950">
+                    <label htmlFor="ext-hospital-phone" className="mb-1 block text-xs font-bold">
                       Telefone da unidade
                     </label>
                     <input
                       id="ext-hospital-phone"
-                      className="aero-input"
+                      className={inputCls}
                       placeholder="(11) 3333-4444"
                       value={externalPhone}
                       onChange={(e) => setExternalPhone(e.target.value)}
@@ -388,12 +390,12 @@ export function TransferPatientModal({
             )}
 
             <div>
-              <label htmlFor="transfer-reason" className="mb-1.5 block text-sm font-extrabold text-sky-950">
+              <label htmlFor="transfer-reason" className="mb-1.5 block text-sm font-bold">
                 Motivo da transferência *
               </label>
               <input
                 id="transfer-reason"
-                className="aero-input"
+                className={inputCls}
                 placeholder="Ex: Necessidade de atendimento cardiológico / UTI indisponível"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
@@ -402,13 +404,13 @@ export function TransferPatientModal({
             </div>
 
             <div>
-              <label htmlFor="transfer-notes" className="mb-1.5 block text-sm font-extrabold text-sky-950">
+              <label htmlFor="transfer-notes" className="mb-1.5 block text-sm font-bold">
                 Observações clínicas para a equipe receptora
               </label>
               <textarea
                 id="transfer-notes"
                 rows={3}
-                className="aero-input resize-none"
+                className={`${inputCls} resize-none`}
                 placeholder="Sinais vitais, medicações administradas, orientações para o transporte..."
                 value={clinicalNotes}
                 onChange={(e) => setClinicalNotes(e.target.value)}
@@ -416,7 +418,7 @@ export function TransferPatientModal({
             </div>
 
             {error && (
-              <p className="rounded-2xl border border-rose-300 bg-rose-100/90 px-4 py-2.5 text-sm font-bold text-rose-700">
+              <p className="rounded-xl bg-destructive/10 px-4 py-2.5 text-sm font-medium text-destructive">
                 {error}
               </p>
             )}
@@ -425,21 +427,21 @@ export function TransferPatientModal({
               <button
                 type="button"
                 onClick={onClose}
-                className="aero-btn-glass rounded-full px-5 py-2.5 text-sm font-bold"
+                className="rounded-xl border border-border px-4 py-2.5 text-sm font-semibold hover:bg-muted"
               >
                 Cancelar
               </button>
               <button
                 type="submit"
                 disabled={submitting || (usesSystem && otherClinics.length === 0)}
-                className="aero-btn inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground hover:opacity-90 disabled:opacity-50"
               >
                 {submitting ? (
-                  <Loader2 className="relative z-10 h-4 w-4 animate-spin" />
+                  <Loader2 className="h-4 w-4 animate-spin" />
                 ) : (
-                  <ArrowLeftRight className="relative z-10 h-4 w-4" />
+                  <ArrowLeftRight className="h-4 w-4" />
                 )}
-                <span className="relative z-10">Confirmar Transferência</span>
+                Confirmar Transferência
               </button>
             </div>
           </form>

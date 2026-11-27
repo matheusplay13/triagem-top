@@ -138,27 +138,26 @@ function PatientIntakePage() {
 
   if (done) {
     return (
-      <div className="aero-page pb-16">
+      <div className="min-h-screen bg-background">
         <AppNav />
         <main className="mx-auto max-w-lg px-4 py-12">
-          <div className="aero-glass overflow-hidden rounded-3xl text-center">
-            <div className="aero-gloss-banner px-6 py-8 text-white">
-              <div className="aero-orb-green relative z-10 mx-auto flex h-16 w-16 items-center justify-center rounded-full">
-                <CheckCircle2 className="relative z-10 h-9 w-9 text-white" />
+          <div
+            className="overflow-hidden rounded-3xl border border-border bg-card text-center"
+            style={{ boxShadow: "var(--shadow-card)" }}
+          >
+            <div className="bg-primary px-6 py-8 text-primary-foreground">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white/20">
+                <CheckCircle2 className="h-10 w-10 text-white" />
               </div>
-              <h1 className="relative z-10 mt-4 text-2xl font-black drop-shadow-xs">
-                Tudo Certo, {name.split(" ")[0]}!
-              </h1>
-              <p className="relative z-10 mt-1.5 text-sm font-semibold text-white/95">
-                Seu pré-check-in foi realizado.
-              </p>
+              <h1 className="mt-4 text-2xl font-bold">Tudo Certo, {name.split(" ")[0]}!</h1>
+              <p className="mt-2 text-primary-foreground/90">Seu pré-check-in foi realizado.</p>
             </div>
 
             <div className="p-8">
-              <div className="text-xs font-extrabold uppercase tracking-widest text-sky-900/70">
+              <div className="text-sm font-medium uppercase tracking-widest text-muted-foreground">
                 Sua Senha Digital
               </div>
-              <div className="aero-title-gradient my-3 text-7xl font-black tracking-tighter">
+              <div className="my-3 text-7xl font-black tracking-tighter text-foreground">
                 {done.ticket}
               </div>
 
@@ -167,18 +166,16 @@ function PatientIntakePage() {
               </div>
 
               {/* Hospital de destino */}
-              <div className="aero-glass-card mt-6 flex items-start gap-3 rounded-2xl p-4 text-left text-sm">
-                <div className="aero-orb flex h-10 w-10 shrink-0 items-center justify-center rounded-xl">
-                  <Building2 className="relative z-10 h-5 w-5" />
-                </div>
+              <div className="mt-6 flex items-start gap-3 rounded-xl border border-primary/25 bg-primary/5 p-4 text-left text-sm">
+                <Building2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
                 <div>
-                  <div className="text-[11px] font-extrabold uppercase tracking-wider text-sky-700">
+                  <div className="text-xs font-bold uppercase tracking-wider text-primary">
                     Hospital / Unidade de Destino
                   </div>
-                  <div className="mt-0.5 font-extrabold text-sky-950">{done.clinicName}</div>
+                  <div className="mt-0.5 font-bold text-foreground">{done.clinicName}</div>
                   {done.clinicAddress && (
                     <div className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
-                      <MapPin className="h-3.5 w-3.5 shrink-0 text-sky-600" />
+                      <MapPin className="h-3.5 w-3.5 shrink-0" />
                       {done.clinicAddress}
                     </div>
                   )}
@@ -186,8 +183,8 @@ function PatientIntakePage() {
               </div>
 
               {done.priority === "high" && (
-                <div className="mt-4 flex items-start gap-3 rounded-2xl border border-rose-300/90 bg-rose-100/80 p-4 text-left text-sm text-rose-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.85)]">
-                  <AlertCircle className="h-5 w-5 shrink-0 text-rose-600" />
+                <div className="mt-4 flex items-start gap-3 rounded-xl bg-destructive/10 p-4 text-left text-sm text-destructive">
+                  <AlertCircle className="h-5 w-5 shrink-0" />
                   <p>
                     <strong>Atenção:</strong> Devido aos seus sintomas, dirija-se imediatamente ao
                     hospital <strong>{done.clinicName}</strong>. Seu caso possui prioridade alta de
@@ -196,8 +193,8 @@ function PatientIntakePage() {
                 </div>
               )}
 
-              <div className="aero-glass-card mt-4 flex items-start gap-3 rounded-2xl p-4 text-left text-sm text-sky-900/85">
-                <Hospital className="h-5 w-5 shrink-0 text-sky-600" />
+              <div className="mt-4 flex items-start gap-3 rounded-xl bg-muted p-4 text-left text-sm text-muted-foreground">
+                <Hospital className="h-5 w-5 shrink-0" />
                 <p>
                   <strong>Ao chegar no hospital:</strong> Dirija-se ao balcão de atendimento ou
                   totem de <strong>{done.clinicName}</strong> e informe sua senha{" "}
@@ -206,8 +203,8 @@ function PatientIntakePage() {
                 </p>
               </div>
 
-              <div className="mt-4 inline-flex items-center justify-center gap-1.5 rounded-full border border-emerald-300/80 bg-emerald-100/75 px-3.5 py-1 text-xs font-bold text-emerald-800">
-                <ShieldCheck className="h-4 w-4 text-emerald-600" />
+              <div className="mt-4 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
+                <ShieldCheck className="h-4 w-4 text-primary" />
                 <span>Termos de Uso, LGPD e Declaração de Veracidade registrados</span>
               </div>
 
@@ -216,13 +213,13 @@ function PatientIntakePage() {
                   onClick={() =>
                     navigate({ to: "/queue", search: { clinicId: done.clinicId } })
                   }
-                  className="aero-btn w-full rounded-full px-5 py-3.5 text-sm font-extrabold"
+                  className="w-full rounded-xl bg-primary px-5 py-3.5 text-sm font-bold text-primary-foreground transition-opacity hover:opacity-90"
                 >
-                  <span className="relative z-10">Acompanhar Fila da Unidade</span>
+                  Acompanhar Fila da Unidade
                 </button>
                 <button
                   onClick={reset}
-                  className="aero-btn-glass w-full rounded-full px-5 py-3.5 text-sm font-extrabold"
+                  className="w-full rounded-xl border border-border bg-transparent px-5 py-3.5 text-sm font-bold transition-colors hover:bg-muted"
                 >
                   Fazer Novo Check-in
                 </button>
@@ -235,47 +232,49 @@ function PatientIntakePage() {
   }
 
   return (
-    <div className="aero-page pb-16">
+    <div className="min-h-screen bg-background pb-12">
       <AppNav />
       <main className="mx-auto max-w-2xl px-4 pt-10">
-        <div className="aero-glass mb-8 rounded-3xl p-6 text-center sm:p-8">
-          <div className="aero-orb mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-3xl">
-            <HeartPulse className="relative z-10 h-10 w-10 text-white" />
+        <div className="mb-10 text-center">
+          <div
+            className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-2xl text-primary-foreground shadow-lg"
+            style={{ background: "var(--gradient-hero)" }}
+          >
+            <HeartPulse className="h-8 w-8" />
           </div>
-          <h1 className="aero-title-gradient text-3xl font-black tracking-tight sm:text-5xl">
+          <h1 className="text-3xl font-black tracking-tight sm:text-4xl">
             Pré-Atendimento Digital
           </h1>
-          <p className="mx-auto mt-3 max-w-lg text-base font-semibold text-sky-950/85">
+          <p className="mx-auto mt-4 max-w-lg text-base text-muted-foreground">
             Está a caminho do hospital? Selecione para qual unidade você está indo, preencha seus
-            sintomas com veracidade e <strong className="text-sky-900">adiante sua triagem</strong>.
+            sintomas com veracidade e <strong>adiante sua triagem</strong>.
           </p>
         </div>
 
         <form onSubmit={submit} className="space-y-6">
-          <div className="aero-glass space-y-8 rounded-3xl p-6 sm:p-8">
+          <div
+            className="space-y-8 rounded-3xl border border-border bg-card p-6 sm:p-8"
+            style={{ boxShadow: "var(--shadow-card)" }}
+          >
             {/* ETAPA 1: HOSPITAL DE DESTINO */}
             <section>
-              <h2 className="mb-2 flex items-center gap-2.5 text-lg font-extrabold text-sky-950">
-                <span className="aero-orb flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black">
-                  <span className="relative z-10">1</span>
+              <h2 className="mb-2 flex items-center gap-2 text-lg font-bold">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs text-primary">
+                  1
                 </span>
-                <span>
-                  Para qual hospital ou clínica você está indo?{" "}
-                  <span className="text-rose-600">*</span>
-                </span>
+                Para qual hospital ou clínica você está indo? <span className="text-destructive">*</span>
               </h2>
               <p className="mb-4 text-sm text-muted-foreground">
                 Escolha a unidade de destino para que sua senha entre diretamente na fila correta.
               </p>
 
               {clinicsQuery.isLoading ? (
-                <div className="aero-glass-card flex items-center justify-center gap-2 rounded-2xl py-8 text-sm font-semibold text-sky-900/75">
-                  <Loader2 className="h-4 w-4 animate-spin text-sky-600" /> Carregando unidades
-                  disponíveis...
+                <div className="flex items-center justify-center gap-2 rounded-2xl border border-border bg-background py-8 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" /> Carregando unidades disponíveis...
                 </div>
               ) : clinics.length === 0 ? (
-                <div className="aero-glass-card rounded-2xl p-5 text-sm text-muted-foreground">
-                  <p className="font-extrabold text-sky-950">
+                <div className="rounded-2xl border border-dashed border-border bg-muted/40 p-5 text-sm text-muted-foreground">
+                  <p className="font-semibold text-foreground">
                     Nenhum hospital ou clínica cadastrado no sistema ainda.
                   </p>
                   <p className="mt-1 text-xs">
@@ -284,10 +283,9 @@ function PatientIntakePage() {
                   </p>
                   <Link
                     to="/cadastro-clinica"
-                    className="aero-btn mt-3 inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-xs font-extrabold"
+                    className="mt-3 inline-flex items-center gap-1.5 rounded-lg bg-primary px-3.5 py-2 text-xs font-bold text-primary-foreground hover:opacity-90"
                   >
-                    <Building2 className="relative z-10 h-3.5 w-3.5" />
-                    <span className="relative z-10">Cadastrar Clínica / Hospital</span>
+                    <Building2 className="h-3.5 w-3.5" /> Cadastrar Clínica / Hospital
                   </Link>
                 </div>
               ) : (
@@ -301,23 +299,27 @@ function PatientIntakePage() {
                         role="radio"
                         aria-checked={selected}
                         onClick={() => setClinicId(c.id)}
-                        className={`flex items-start justify-between gap-3 rounded-2xl p-4 text-left ${
-                          selected ? "aero-tile-active" : "aero-tile"
+                        className={`flex items-start justify-between gap-3 rounded-2xl border p-4 text-left transition-all ${
+                          selected
+                            ? "border-primary bg-primary/5 ring-2 ring-primary/25"
+                            : "border-border bg-background hover:border-primary/40 hover:bg-muted/30"
                         }`}
                       >
                         <div className="flex items-start gap-3">
                           <div
-                            className={`mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
-                              selected ? "aero-orb" : "aero-orb-green opacity-85"
+                            className={`mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${
+                              selected
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-muted text-muted-foreground"
                             }`}
                           >
-                            <Hospital className="relative z-10 h-4 w-4 text-white" />
+                            <Hospital className="h-4 w-4" />
                           </div>
                           <div>
-                            <div className="font-extrabold text-sky-950">{c.name}</div>
+                            <div className="font-bold text-foreground">{c.name}</div>
                             {c.address && (
                               <div className="mt-0.5 flex items-center gap-1 text-xs text-muted-foreground">
-                                <MapPin className="h-3 w-3 shrink-0 text-sky-600" />
+                                <MapPin className="h-3 w-3 shrink-0" />
                                 {c.address}
                               </div>
                             )}
@@ -329,14 +331,12 @@ function PatientIntakePage() {
                           </div>
                         </div>
                         <div className="flex shrink-0 flex-col items-end gap-1">
-                          <span className="aero-pill inline-flex items-center gap-1 rounded-full border border-sky-300/80 bg-white/85 px-2.5 py-1 text-xs font-bold text-sky-900">
-                            <Users className="relative z-10 h-3 w-3 text-sky-600" />
-                            <span className="relative z-10">{c.waitingCount} na fila</span>
+                          <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-muted-foreground">
+                            <Users className="h-3 w-3" />
+                            {c.waitingCount} na fila
                           </span>
                           {selected && (
-                            <span className="text-[11px] font-extrabold text-sky-700">
-                              Selecionado
-                            </span>
+                            <span className="text-[11px] font-bold text-primary">Selecionado</span>
                           )}
                         </div>
                       </button>
@@ -346,13 +346,13 @@ function PatientIntakePage() {
               )}
             </section>
 
-            <hr className="border-white/75" />
+            <hr className="border-border" />
 
             {/* ETAPA 2: DADOS DO PACIENTE */}
             <section>
-              <h2 className="mb-4 flex items-center gap-2.5 text-lg font-extrabold text-sky-950">
-                <span className="aero-orb flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black">
-                  <span className="relative z-10">2</span>
+              <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs text-primary">
+                  2
                 </span>
                 Seus Dados
               </h2>
@@ -361,7 +361,7 @@ function PatientIntakePage() {
                   <input
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    className="aero-input"
+                    className="input"
                     placeholder="Seu nome completo"
                   />
                 </Field>
@@ -372,7 +372,7 @@ function PatientIntakePage() {
                     max={130}
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
-                    className="aero-input"
+                    className="input"
                     placeholder="Ex: 35"
                   />
                 </Field>
@@ -382,20 +382,20 @@ function PatientIntakePage() {
                   <input
                     value={doc}
                     onChange={(e) => setDoc(e.target.value)}
-                    className="aero-input"
+                    className="input"
                     placeholder="Opcional"
                   />
                 </Field>
               </div>
             </section>
 
-            <hr className="border-white/75" />
+            <hr className="border-border" />
 
             {/* ETAPA 3: SINTOMAS */}
             <section>
-              <h2 className="mb-4 flex items-center gap-2.5 text-lg font-extrabold text-sky-950">
-                <span className="aero-orb flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black">
-                  <span className="relative z-10">3</span>
+              <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs text-primary">
+                  3
                 </span>
                 Como você está se sentindo?
               </h2>
@@ -405,24 +405,20 @@ function PatientIntakePage() {
                   value={symptoms}
                   onChange={(e) => setSymptoms(e.target.value)}
                   rows={3}
-                  className="aero-input resize-none"
+                  className="input resize-none"
                   placeholder="Ex: Estou com muita dor de cabeça desde ontem à noite..."
                 />
               </Field>
 
               <div className="mt-6">
-                <label className="mb-4 flex items-center justify-between font-bold text-sky-950">
+                <label className="mb-4 flex items-center justify-between font-medium">
                   <span>Qual o nível do seu incômodo/dor?</span>
                   <span
-                    className={`aero-pill flex h-9 w-12 items-center justify-center rounded-full font-black text-white transition-colors ${
-                      painLevel <= 4
-                        ? "border border-emerald-700/80 bg-[linear-gradient(180deg,#9cf974_0%,#25c956_50%,#0da140_100%)]"
-                        : painLevel <= 7
-                          ? "border border-amber-600/80 bg-[linear-gradient(180deg,#ffe678_0%,#f7a910_50%,#de7400_100%)]"
-                          : "border border-rose-700/80 bg-[linear-gradient(180deg,#ff7d95_0%,#eb2549_50%,#c20a2c_100%)]"
-                    }`}
+                    className={`flex h-8 w-10 items-center justify-center rounded-lg font-bold text-white transition-colors
+                      ${painLevel <= 4 ? "bg-priority-low" : painLevel <= 7 ? "bg-priority-medium" : "bg-priority-high"}
+                    `}
                   >
-                    <span className="relative z-10">{painLevel}</span>
+                    {painLevel}
                   </span>
                 </label>
                 <input
@@ -432,28 +428,24 @@ function PatientIntakePage() {
                   value={painLevel}
                   onChange={(e) => setPainLevel(Number(e.target.value))}
                   style={{ "--progress": `${painLevel * 10}%` } as React.CSSProperties}
-                  className={`aero-range w-full cursor-pointer transition-all ${
-                    painLevel <= 4
-                      ? "text-priority-low"
-                      : painLevel <= 7
-                        ? "text-priority-medium"
-                        : "text-priority-high"
-                  }`}
+                  className={`range-input w-full cursor-pointer transition-all
+                    ${painLevel <= 4 ? "text-priority-low" : painLevel <= 7 ? "text-priority-medium" : "text-priority-high"}
+                  `}
                 />
-                <div className="mt-3 flex justify-between text-[11px] font-extrabold uppercase tracking-widest text-sky-900/70">
-                  <span className={painLevel === 0 ? "text-emerald-700" : ""}>Sem dor</span>
-                  <span className={painLevel === 10 ? "text-rose-600" : ""}>Insuportável</span>
+                <div className="mt-3 flex justify-between text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                  <span className={painLevel === 0 ? "text-foreground" : ""}>Sem dor</span>
+                  <span className={painLevel === 10 ? "text-destructive" : ""}>Insuportável</span>
                 </div>
               </div>
             </section>
 
-            <hr className="border-white/75" />
+            <hr className="border-border" />
 
             {/* ETAPA 4: SINAIS DE ALERTA */}
             <section>
-              <h2 className="mb-4 flex items-center gap-2.5 text-lg font-extrabold text-sky-950">
-                <span className="aero-orb flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black">
-                  <span className="relative z-10">4</span>
+              <h2 className="mb-4 flex items-center gap-2 text-lg font-bold">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs text-primary">
+                  4
                 </span>
                 Atenção especial
               </h2>
@@ -475,39 +467,37 @@ function PatientIntakePage() {
               </fieldset>
             </section>
 
-            <hr className="border-white/75" />
+            <hr className="border-border" />
 
             {/* ETAPA 5: TERMOS DE USO, LGPD, VERACIDADE E USO EXCLUSIVO */}
             <section className="space-y-4">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <h2 className="flex items-center gap-2.5 text-lg font-extrabold text-sky-950">
-                  <span className="aero-orb-green flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-black">
-                    <span className="relative z-10">5</span>
+                <h2 className="flex items-center gap-2 text-lg font-bold">
+                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs text-primary">
+                    5
                   </span>
-                  <span>
-                    Termos de Uso, Proteção de Dados e Veracidade{" "}
-                    <span className="text-rose-600">*</span>
-                  </span>
+                  Termos de Uso, Proteção de Dados e Veracidade{" "}
+                  <span className="text-destructive">*</span>
                 </h2>
                 <a
                   href="/termos"
                   target="_blank"
                   rel="noreferrer"
-                  className="text-xs font-extrabold text-sky-700 underline-offset-4 hover:underline"
+                  className="text-xs font-bold text-primary underline-offset-4 hover:underline"
                 >
                   Ler termos completos
                 </a>
               </div>
 
               {/* Aviso legal sobre não mentir nos sintomas */}
-              <div className="rounded-2xl border border-rose-300/85 bg-rose-50/85 p-4 text-xs shadow-[inset_0_1.5px_0_rgba(255,255,255,0.9)]">
-                <div className="flex items-start gap-2.5 text-rose-700">
+              <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-xs">
+                <div className="flex items-start gap-2.5 text-destructive">
                   <Scale className="mt-0.5 h-4 w-4 shrink-0" />
                   <div>
-                    <p className="font-extrabold">
+                    <p className="font-bold">
                       Aviso Legal: Proibição de falsificação ou exagero de sintomas
                     </p>
-                    <p className="mt-1 leading-relaxed text-sky-950/85">
+                    <p className="mt-1 leading-relaxed text-foreground/80">
                       Informar sintomas falsos para elevar artificialmente sua prioridade e passar à
                       frente de pacientes mais graves viola o{" "}
                       <strong>Art. 299 (Falsidade Ideológica)</strong> e o{" "}
@@ -522,7 +512,7 @@ function PatientIntakePage() {
                 <button
                   type="button"
                   onClick={() => setShowLaws((v) => !v)}
-                  className="mt-3 inline-flex items-center gap-1 font-extrabold text-rose-700 hover:underline"
+                  className="mt-3 inline-flex items-center gap-1 font-bold text-destructive hover:underline"
                 >
                   {showLaws ? (
                     <>
@@ -536,9 +526,9 @@ function PatientIntakePage() {
                 </button>
 
                 {showLaws && (
-                  <ul className="mt-3 space-y-2 border-t border-rose-200/90 pt-3">
+                  <ul className="mt-3 space-y-2 border-t border-destructive/20 pt-3">
                     {SYMPTOM_TRUTHFULNESS_LAWS.map((law) => (
-                      <li key={law.code} className="text-sky-950/85">
+                      <li key={law.code} className="text-foreground/85">
                         <strong>{law.code}</strong> ({law.title}): {law.summary}
                       </li>
                     ))}
@@ -575,12 +565,12 @@ function PatientIntakePage() {
             </section>
           </div>
 
-          <div className="aero-glass-card flex items-start gap-3 rounded-2xl p-4 text-xs text-sky-900/85">
-            <Info className="h-5 w-5 shrink-0 text-sky-600" />
+          <div className="flex items-start gap-3 rounded-2xl bg-muted/50 p-4 text-xs text-muted-foreground">
+            <Info className="h-5 w-5 shrink-0 text-primary" />
             <p>
               Suas informações serão analisadas automaticamente para priorizar seu atendimento de
               acordo com a gravidade na unidade escolhida.{" "}
-              <strong className="text-sky-950">
+              <strong>
                 Em caso de emergência extrema, não aguarde: procure um médico imediatamente ou ligue
                 192 (SAMU).
               </strong>
@@ -588,7 +578,7 @@ function PatientIntakePage() {
           </div>
 
           {error && (
-            <p className="rounded-2xl border border-rose-300 bg-rose-100/90 px-4 py-3 text-sm font-bold text-rose-700">
+            <p className="rounded-xl bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
               {error}
             </p>
           )}
@@ -596,30 +586,84 @@ function PatientIntakePage() {
           <button
             type="submit"
             disabled={!valid || submitting}
-            className="aero-btn flex w-full items-center justify-center gap-2 rounded-full py-4 text-base font-extrabold"
+            className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 text-base font-bold text-primary-foreground transition-all hover:scale-[0.99] hover:opacity-90 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50"
+            style={{ boxShadow: valid ? "var(--shadow-soft)" : undefined }}
           >
-            {submitting && <Loader2 className="relative z-10 h-5 w-5 animate-spin" />}
-            <span className="relative z-10">Gerar minha senha digital</span>
+            {submitting && <Loader2 className="h-5 w-5 animate-spin" />}
+            Gerar minha senha digital
           </button>
 
-          <p className="aero-glass-card mx-auto w-fit rounded-full px-5 py-2 text-center text-xs font-semibold text-sky-950/85">
+          <p className="text-center text-xs text-muted-foreground">
             Quer usar em sua clínica ou hospital?{" "}
             <Link
               to="/planos"
-              className="font-extrabold text-sky-800 underline-offset-4 hover:underline"
+              className="font-medium text-primary underline-offset-4 hover:underline"
             >
               Ver planos e preços
             </Link>{" "}
             ·{" "}
             <Link
               to="/termos"
-              className="font-extrabold text-sky-800 underline-offset-4 hover:underline"
+              className="font-medium text-primary underline-offset-4 hover:underline"
             >
               Termos de Uso e LGPD
             </Link>
           </p>
         </form>
       </main>
+
+      <style>{`
+        .input {
+          width: 100%;
+          border-radius: 0.75rem;
+          border: 1px solid var(--color-input);
+          background: var(--color-background);
+          padding: 0.8rem 1rem;
+          font-size: 1rem;
+          outline: none;
+          transition: border-color .15s, box-shadow .15s;
+        }
+        .input:focus {
+          border-color: var(--color-ring);
+          box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-ring) 20%, transparent);
+        }
+        .range-input {
+          -webkit-appearance: none;
+          appearance: none;
+          height: 0.75rem;
+          border-radius: 9999px;
+          background: linear-gradient(to right, currentColor var(--progress, 0%), var(--color-muted) var(--progress, 0%));
+          outline: none;
+        }
+        .range-input::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 1.5rem;
+          height: 1.5rem;
+          border-radius: 50%;
+          background: currentColor;
+          cursor: pointer;
+          transition: transform 0.15s;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+          border: 2px solid white;
+        }
+        .range-input::-webkit-slider-thumb:hover {
+          transform: scale(1.15);
+        }
+        .range-input::-moz-range-thumb {
+          width: 1.5rem;
+          height: 1.5rem;
+          border-radius: 50%;
+          background: currentColor;
+          cursor: pointer;
+          transition: transform 0.15s;
+          border: 2px solid white;
+          box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .range-input::-moz-range-thumb:hover {
+          transform: scale(1.15);
+        }
+      `}</style>
     </div>
   );
 }
@@ -635,8 +679,8 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="mb-2 block text-sm font-extrabold text-sky-950">
-        {label} {required && <span className="text-rose-600">*</span>}
+      <span className="mb-2 block text-sm font-bold text-foreground/90">
+        {label} {required && <span className="text-destructive">*</span>}
       </span>
       {children}
     </label>
@@ -653,16 +697,12 @@ function Check({
   onChange: (v: boolean) => void;
 }) {
   return (
-    <label
-      className={`flex cursor-pointer items-center gap-3 rounded-2xl p-4 text-sm font-bold text-sky-950 ${
-        checked ? "aero-tile-active" : "aero-tile"
-      }`}
-    >
+    <label className="flex cursor-pointer items-center gap-3 rounded-xl border border-border bg-background p-4 text-sm font-medium transition hover:border-primary/50 hover:bg-primary/5">
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="h-5 w-5 accent-sky-600"
+        className="h-5 w-5 accent-primary"
       />
       {label}
     </label>
@@ -685,8 +725,10 @@ function ConsentCheck({
   return (
     <label
       htmlFor={id}
-      className={`flex cursor-pointer items-start gap-3 rounded-2xl p-4 ${
-        checked ? "aero-tile-active" : "aero-tile"
+      className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition ${
+        checked
+          ? "border-primary/50 bg-primary/5"
+          : "border-border bg-background hover:border-primary/40"
       }`}
     >
       <input
@@ -694,10 +736,10 @@ function ConsentCheck({
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
-        className="mt-1 h-4 w-4 shrink-0 accent-sky-600"
+        className="mt-1 h-4 w-4 shrink-0 accent-primary"
       />
       <span className="text-xs leading-relaxed">
-        <strong className="block text-sm font-extrabold text-sky-950">{title} *</strong>
+        <strong className="block text-sm text-foreground">{title} *</strong>
         <span className="mt-0.5 block text-muted-foreground">{description}</span>
       </span>
     </label>

@@ -83,19 +83,17 @@ function QueuePage() {
   }
 
   return (
-    <div className="aero-page pb-16">
+    <div className="min-h-screen bg-background">
       <AppNav />
       <main className="mx-auto max-w-6xl px-4 py-8">
-        <div className="aero-glass mb-8 flex flex-wrap items-center justify-between gap-4 rounded-3xl p-6">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <div className="mb-1.5 inline-flex items-center gap-1.5 rounded-full border border-sky-300/80 bg-white/80 px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-sky-800 shadow-[inset_0_1px_0_rgba(255,255,255,0.95)]">
-              <Building2 className="h-3.5 w-3.5 text-sky-600" />
+            <div className="mb-1 flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-primary">
+              <Building2 className="h-3.5 w-3.5" />
               {activeClinicName ?? "Todas as unidades cadastradas"}
             </div>
-            <h1 className="aero-title-gradient text-3xl font-black tracking-tight">
-              Painel de atendimento
-            </h1>
-            <p className="mt-0.5 text-sm font-semibold text-sky-900/75">
+            <h1 className="text-2xl font-bold tracking-tight">Painel de atendimento</h1>
+            <p className="text-sm text-muted-foreground">
               {queue.length} aguardando · {inService.length} em atendimento
             </p>
           </div>
@@ -103,7 +101,7 @@ function QueuePage() {
           <div className="flex flex-wrap items-center gap-3">
             {!isAuth && clinics.length > 0 && (
               <div className="flex items-center gap-2">
-                <label htmlFor="queue-clinic-filter" className="text-xs font-extrabold text-sky-950">
+                <label htmlFor="queue-clinic-filter" className="text-xs font-bold text-muted-foreground">
                   Hospital:
                 </label>
                 <select
@@ -115,7 +113,7 @@ function QueuePage() {
                       search: { clinicId: e.target.value || undefined },
                     })
                   }
-                  className="aero-input w-auto min-w-[220px] py-2 text-sm font-bold"
+                  className="rounded-xl border border-input bg-card px-3 py-2 text-sm font-medium outline-none focus:border-primary focus:ring-2 focus:ring-primary/20"
                 >
                   <option value="">Todos os hospitais</option>
                   {clinics.map((c) => (
@@ -134,24 +132,25 @@ function QueuePage() {
                   await refresh();
                 }}
                 disabled={queue.length === 0}
-                className="aero-btn inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-extrabold"
+                className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                style={{ boxShadow: queue.length ? "var(--shadow-soft)" : undefined }}
               >
-                <BellRing className="relative z-10 h-4 w-4" />
-                <span className="relative z-10">Chamar próximo</span>
+                <BellRing className="h-4 w-4" />
+                Chamar próximo
               </button>
             )}
           </div>
         </div>
 
         {/* Now serving */}
-        <section className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <section className="mb-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {inService.length === 0 && (
-            <div className="aero-glass col-span-full rounded-3xl p-10 text-center text-sm font-semibold text-sky-900/75">
+            <div className="col-span-full rounded-2xl border border-dashed border-border bg-card/50 p-8 text-center text-sm text-muted-foreground">
               Nenhum paciente em atendimento.
               {isAuth && (
                 <>
                   {" "}
-                  Clique em <strong className="text-sky-950">Chamar próximo</strong> para iniciar.
+                  Clique em <strong>Chamar próximo</strong> para iniciar.
                 </>
               )}
             </div>
@@ -161,52 +160,51 @@ function QueuePage() {
               (t) => t.destinationUsesSystem && t.toClinicId === p.clinicId && t.fromClinic,
             );
             return (
-              <div key={p.id} className="aero-glass overflow-hidden rounded-3xl">
-                <div className="aero-gloss-banner flex items-center justify-between gap-2 px-5 py-2.5 text-xs font-extrabold uppercase tracking-wider text-white">
-                  <span className="relative z-10 flex items-center gap-2">
+              <div
+                key={p.id}
+                className="rounded-2xl border border-primary/30 bg-card p-5"
+                style={{ boxShadow: "var(--shadow-soft)" }}
+              >
+                <div className="flex items-center justify-between gap-2 text-xs uppercase tracking-wider text-primary">
+                  <span className="flex items-center gap-2">
                     <Volume2 className="h-3.5 w-3.5" /> Chamando agora
                   </span>
                   {!activeClinicId && p.clinic && (
-                    <span className="relative z-10 truncate rounded-full bg-white/25 px-2.5 py-0.5 text-[10px] font-bold normal-case text-white">
+                    <span className="truncate rounded-full bg-muted px-2 py-0.5 text-[10px] font-bold normal-case text-muted-foreground">
                       {p.clinic.name}
                     </span>
                   )}
                 </div>
-                <div className="p-5">
-                  <div className="aero-title-gradient text-5xl font-black tracking-tight">
-                    {p.ticket}
+                <div className="mt-2 text-4xl font-black tracking-tight text-primary">{p.ticket}</div>
+                <div className="mt-1 truncate text-base font-semibold">{p.name}</div>
+                {incomingTransfer?.fromClinic && (
+                  <div className="mt-1 inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+                    <ArrowLeftRight className="h-3 w-3" />
+                    Transferido de {incomingTransfer.fromClinic.name}
                   </div>
-                  <div className="mt-1 truncate text-base font-extrabold text-sky-950">{p.name}</div>
-                  {incomingTransfer?.fromClinic && (
-                    <div className="mt-1.5 inline-flex items-center gap-1 rounded-full border border-sky-300/80 bg-sky-100/80 px-2.5 py-0.5 text-[11px] font-bold text-sky-800">
-                      <ArrowLeftRight className="h-3 w-3" />
-                      Transferido de {incomingTransfer.fromClinic.name}
+                )}
+                <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
+                  <PriorityBadge priority={p.priority} size="sm" />
+                  {isAuth && (
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => setTransferTarget(p)}
+                        title="Transferir paciente para outro hospital"
+                        className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted"
+                      >
+                        <ArrowLeftRight className="h-3.5 w-3.5" /> Transferir
+                      </button>
+                      <button
+                        onClick={async () => {
+                          await finishPatient(p.id);
+                          await refresh();
+                        }}
+                        className="inline-flex items-center gap-1 rounded-md bg-success px-3 py-1.5 text-xs font-semibold text-success-foreground hover:opacity-90"
+                      >
+                        <CheckCircle2 className="h-3.5 w-3.5" /> Finalizar
+                      </button>
                     </div>
                   )}
-                  <div className="mt-4 flex flex-wrap items-center justify-between gap-2">
-                    <PriorityBadge priority={p.priority} size="sm" />
-                    {isAuth && (
-                      <div className="flex items-center gap-1.5">
-                        <button
-                          onClick={() => setTransferTarget(p)}
-                          title="Transferir paciente para outro hospital"
-                          className="aero-btn-glass inline-flex items-center gap-1 rounded-full px-3 py-1.5 text-xs font-bold"
-                        >
-                          <ArrowLeftRight className="h-3.5 w-3.5" /> Transferir
-                        </button>
-                        <button
-                          onClick={async () => {
-                            await finishPatient(p.id);
-                            await refresh();
-                          }}
-                          className="aero-btn-green inline-flex items-center gap-1 rounded-full px-3.5 py-1.5 text-xs font-extrabold"
-                        >
-                          <CheckCircle2 className="relative z-10 h-3.5 w-3.5" />
-                          <span className="relative z-10">Finalizar</span>
-                        </button>
-                      </div>
-                    )}
-                  </div>
                 </div>
               </div>
             );
@@ -214,16 +212,16 @@ function QueuePage() {
         </section>
 
         {/* Queue list */}
-        <section className="aero-glass rounded-3xl p-6">
-          <h2 className="mb-4 text-xs font-extrabold uppercase tracking-widest text-sky-900/75">
+        <section>
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">
             Fila ordenada por prioridade
           </h2>
           {queue.length === 0 ? (
-            <div className="aero-glass-card rounded-2xl p-10 text-center text-sm font-semibold text-sky-900/70">
+            <div className="rounded-2xl border border-dashed border-border bg-card/50 p-10 text-center text-sm text-muted-foreground">
               Fila vazia{activeClinicName ? ` em ${activeClinicName}` : ""}.
             </div>
           ) : (
-            <ol className="space-y-3">
+            <ol className="space-y-2">
               {queue.map((p, i) => {
                 const incomingTransfer = p.transfers.find(
                   (t) => t.destinationUsesSystem && t.toClinicId === p.clinicId && t.fromClinic,
@@ -231,25 +229,24 @@ function QueuePage() {
                 return (
                   <li
                     key={p.id}
-                    className="aero-glass-card flex flex-wrap items-center gap-4 rounded-2xl p-4 transition-transform hover:-translate-y-0.5"
+                    className="flex flex-wrap items-center gap-4 rounded-xl border border-border bg-card p-4"
+                    style={{ boxShadow: "var(--shadow-card)" }}
                   >
-                    <div className="aero-orb flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-black">
-                      <span className="relative z-10">{i + 1}</span>
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-muted text-sm font-bold text-muted-foreground">
+                      {i + 1}
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-lg font-black text-sky-700">{p.ticket}</span>
-                        <span className="truncate font-extrabold text-sky-950">{p.name}</span>
-                        <span className="text-xs font-semibold text-muted-foreground">
-                          · {p.age} anos
-                        </span>
+                        <span className="text-lg font-bold text-primary">{p.ticket}</span>
+                        <span className="truncate font-medium">{p.name}</span>
+                        <span className="text-xs text-muted-foreground">· {p.age} anos</span>
                         {!activeClinicId && p.clinic && (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-sky-200 bg-white/80 px-2.5 py-0.5 text-[11px] font-bold text-sky-800">
-                            <Building2 className="h-3 w-3 text-sky-600" /> {p.clinic.name}
+                          <span className="inline-flex items-center gap-1 rounded-full bg-muted px-2 py-0.5 text-[11px] font-medium text-muted-foreground">
+                            <Building2 className="h-3 w-3" /> {p.clinic.name}
                           </span>
                         )}
                         {incomingTransfer?.fromClinic && (
-                          <span className="inline-flex items-center gap-1 rounded-full border border-sky-300 bg-sky-100/80 px-2.5 py-0.5 text-[11px] font-bold text-sky-800">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
                             <ArrowLeftRight className="h-3 w-3" />
                             Transferido de {incomingTransfer.fromClinic.name}
                           </span>
@@ -259,25 +256,25 @@ function QueuePage() {
                         {p.symptoms}
                       </div>
                     </div>
-                    <div className="hidden items-center gap-1.5 rounded-full border border-white/80 bg-white/65 px-2.5 py-1 text-xs font-bold text-sky-900 sm:flex">
-                      <Clock className="h-3.5 w-3.5 text-sky-600" />
+                    <div className="hidden items-center gap-1.5 text-xs text-muted-foreground sm:flex">
+                      <Clock className="h-3.5 w-3.5" />
                       {formatWait(now - p.arrivedAt)}
                     </div>
                     {isAuth && p.lgpdConsent && p.truthfulnessConsent && (
                       <span
                         title="Termos LGPD, Veracidade e Uso Exclusivo assinados pelo paciente"
-                        className="hidden items-center gap-1 rounded-full border border-emerald-300/80 bg-emerald-100/80 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 md:inline-flex"
+                        className="hidden items-center gap-1 rounded-full bg-priority-low/10 px-2 py-0.5 text-[11px] font-semibold text-priority-low md:inline-flex"
                       >
-                        <ShieldCheck className="h-3 w-3 text-emerald-600" /> Termos OK
+                        <ShieldCheck className="h-3 w-3" /> Termos OK
                       </span>
                     )}
                     <PriorityBadge priority={p.priority} size="sm" />
                     {isAuth && (
-                      <div className="flex items-center gap-1.5">
+                      <div className="flex items-center gap-1">
                         <button
                           onClick={() => setTransferTarget(p)}
                           title="Transferir para outro hospital"
-                          className="aero-btn-glass rounded-full p-2 text-sky-800"
+                          className="rounded-md p-1.5 text-muted-foreground hover:bg-primary/10 hover:text-primary"
                         >
                           <ArrowLeftRight className="h-4 w-4" />
                         </button>
@@ -287,7 +284,7 @@ function QueuePage() {
                             await refresh();
                           }}
                           title="Remover da fila"
-                          className="rounded-full border border-rose-200 bg-white/80 p-2 text-rose-600 transition-colors hover:bg-rose-500 hover:text-white"
+                          className="rounded-md p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive"
                         >
                           <UserMinus className="h-4 w-4" />
                         </button>

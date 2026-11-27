@@ -37,596 +37,78 @@
 }
 
 :root {
-  --radius: 1rem;
-  --background: #d9f3ff;
-  --foreground: #092c4c;
-  --card: rgba(255, 255, 255, 0.74);
-  --card-foreground: #092c4c;
-  --popover: rgba(255, 255, 255, 0.92);
-  --popover-foreground: #092c4c;
-  --primary: #0088e8;
-  --primary-foreground: #ffffff;
-  --secondary: rgba(224, 246, 255, 0.8);
-  --secondary-foreground: #0b3c66;
-  --muted: rgba(215, 242, 255, 0.62);
-  --muted-foreground: #2e5d80;
-  --accent: rgba(164, 232, 255, 0.65);
-  --accent-foreground: #063963;
-  --destructive: #e02447;
-  --destructive-foreground: #ffffff;
-  --border: rgba(255, 255, 255, 0.78);
-  --input: rgba(110, 198, 240, 0.55);
-  --ring: #00a8ff;
+  --radius: 0.75rem;
+  --background: oklch(0.99 0.005 220);
+  --foreground: oklch(0.20 0.04 230);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.20 0.04 230);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.20 0.04 230);
+  --primary: oklch(0.55 0.13 200);
+  --primary-foreground: oklch(0.99 0.005 220);
+  --secondary: oklch(0.95 0.02 215);
+  --secondary-foreground: oklch(0.25 0.05 230);
+  --muted: oklch(0.96 0.01 220);
+  --muted-foreground: oklch(0.50 0.03 230);
+  --accent: oklch(0.93 0.04 200);
+  --accent-foreground: oklch(0.25 0.08 220);
+  --destructive: oklch(0.58 0.22 25);
+  --destructive-foreground: oklch(0.99 0.005 220);
+  --border: oklch(0.91 0.015 220);
+  --input: oklch(0.91 0.015 220);
+  --ring: oklch(0.55 0.13 200);
 
-  --priority-high: #e6294b;
-  --priority-high-foreground: #ffffff;
-  --priority-medium: #f59e0b;
-  --priority-medium-foreground: #4d2600;
-  --priority-low: #12b858;
-  --priority-low-foreground: #ffffff;
-  --success: #12b858;
-  --success-foreground: #ffffff;
+  --priority-high: oklch(0.58 0.22 25);
+  --priority-high-foreground: oklch(0.99 0.005 220);
+  --priority-medium: oklch(0.75 0.16 75);
+  --priority-medium-foreground: oklch(0.25 0.08 60);
+  --priority-low: oklch(0.65 0.15 155);
+  --priority-low-foreground: oklch(0.99 0.005 220);
+  --success: oklch(0.65 0.15 155);
+  --success-foreground: oklch(0.99 0.005 220);
 
-  --gradient-hero: linear-gradient(180deg, #64ecff 0%, #00a8ff 48%, #0077d4 52%, #19c7e6 100%);
-  --gradient-aero-green: linear-gradient(180deg, #9cf974 0%, #2fd45a 48%, #0ea443 52%, #2ee070 100%);
-  --shadow-soft: 0 10px 28px -6px rgba(0, 132, 224, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.85);
-  --shadow-card: 0 14px 36px -12px rgba(0, 94, 168, 0.24), 0 3px 10px -2px rgba(0, 118, 196, 0.12), inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
+  --gradient-hero: linear-gradient(135deg, oklch(0.55 0.13 200), oklch(0.65 0.15 175));
+  --shadow-soft: 0 4px 20px -8px oklch(0.55 0.13 200 / 0.25);
+  --shadow-card: 0 2px 10px -4px oklch(0.20 0.04 230 / 0.08);
 }
 
 .dark {
-  --background: #06213a;
-  --foreground: #eaf8ff;
-  --card: rgba(12, 52, 86, 0.72);
-  --card-foreground: #eaf8ff;
-  --popover: rgba(10, 44, 74, 0.94);
-  --popover-foreground: #eaf8ff;
-  --primary: #2bc4ff;
-  --primary-foreground: #032138;
-  --secondary: rgba(22, 82, 128, 0.68);
-  --secondary-foreground: #ddf6ff;
-  --muted: rgba(15, 66, 108, 0.62);
-  --muted-foreground: #9fd8f5;
-  --accent: rgba(0, 168, 255, 0.3);
-  --accent-foreground: #eaf8ff;
-  --destructive: #ff4769;
-  --destructive-foreground: #ffffff;
-  --border: rgba(152, 228, 255, 0.28);
-  --input: rgba(120, 214, 255, 0.35);
-  --ring: #3bd1ff;
-  --priority-high: #ff4769;
-  --priority-high-foreground: #ffffff;
-  --priority-medium: #ffbe2e;
-  --priority-medium-foreground: #3a1b00;
-  --priority-low: #30df74;
-  --priority-low-foreground: #032a14;
-  --success: #30df74;
-  --success-foreground: #032a14;
+  --background: oklch(0.16 0.03 230);
+  --foreground: oklch(0.96 0.01 220);
+  --card: oklch(0.22 0.04 230);
+  --card-foreground: oklch(0.96 0.01 220);
+  --popover: oklch(0.22 0.04 230);
+  --popover-foreground: oklch(0.96 0.01 220);
+  --primary: oklch(0.70 0.14 195);
+  --primary-foreground: oklch(0.16 0.03 230);
+  --secondary: oklch(0.28 0.04 230);
+  --secondary-foreground: oklch(0.96 0.01 220);
+  --muted: oklch(0.26 0.03 230);
+  --muted-foreground: oklch(0.70 0.03 220);
+  --accent: oklch(0.30 0.06 210);
+  --accent-foreground: oklch(0.96 0.01 220);
+  --destructive: oklch(0.65 0.22 25);
+  --destructive-foreground: oklch(0.99 0.005 220);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.70 0.14 195);
+  --priority-high: oklch(0.65 0.22 25);
+  --priority-high-foreground: oklch(0.99 0.005 220);
+  --priority-medium: oklch(0.78 0.16 75);
+  --priority-medium-foreground: oklch(0.20 0.06 60);
+  --priority-low: oklch(0.70 0.15 155);
+  --priority-low-foreground: oklch(0.16 0.03 230);
+  --success: oklch(0.70 0.15 155);
+  --success-foreground: oklch(0.16 0.03 230);
 }
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
   body {
-    font-family: "Nunito", "Segoe UI", "Frutiger", "Open Sans", system-ui, -apple-system, sans-serif;
     background-color: var(--color-background);
     color: var(--color-foreground);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-    overflow-x: hidden;
   }
-
-  button:not(:disabled),
-  a[href] {
-    cursor: pointer;
-  }
-}
-
-/* =====================================================================
-   FRUTIGER AERO — GLASSMORPHISM, GLOSSY GEL & ATMOSPHERIC UTILITIES
-   ===================================================================== */
-
-.aero-page {
-  position: relative;
-  min-height: 100vh;
-  background: transparent;
-}
-
-/* Painel principal estilo Windows Vista / 7 Aero Glass */
-.aero-glass {
-  position: relative;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.86) 0%,
-    rgba(241, 251, 255, 0.72) 45%,
-    rgba(224, 246, 255, 0.66) 100%
-  );
-  backdrop-filter: blur(18px) saturate(185%);
-  -webkit-backdrop-filter: blur(18px) saturate(185%);
-  border: 1.5px solid rgba(255, 255, 255, 0.88);
-  box-shadow:
-    0 18px 42px -14px rgba(0, 98, 178, 0.28),
-    0 4px 14px -4px rgba(0, 134, 214, 0.14),
-    inset 0 2px 0 rgba(255, 255, 255, 0.96),
-    inset 0 -1px 0 rgba(0, 148, 224, 0.18);
-}
-
-/* Sub-cartão translúcido interno */
-.aero-glass-card {
-  position: relative;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.88) 0%,
-    rgba(235, 249, 255, 0.74) 100%
-  );
-  backdrop-filter: blur(12px) saturate(160%);
-  -webkit-backdrop-filter: blur(12px) saturate(160%);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    0 8px 22px -10px rgba(0, 102, 180, 0.22),
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.95),
-    inset 0 -1px 0 rgba(0, 148, 224, 0.12);
-}
-
-/* Barra superior Aero Taskbar Glass */
-.aero-header {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.84) 0%,
-    rgba(222, 246, 255, 0.74) 50%,
-    rgba(198, 238, 255, 0.78) 51%,
-    rgba(225, 248, 255, 0.82) 100%
-  );
-  backdrop-filter: blur(20px) saturate(200%);
-  -webkit-backdrop-filter: blur(20px) saturate(200%);
-  border-bottom: 1.5px solid rgba(255, 255, 255, 0.9);
-  box-shadow:
-    0 8px 26px -8px rgba(0, 105, 185, 0.24),
-    inset 0 1px 0 rgba(255, 255, 255, 0.98);
-}
-
-/* Botão primário Aqua Glossy Gel (reflexo especular na metade superior) */
-.aero-btn {
-  position: relative;
-  overflow: hidden;
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 52, 108, 0.45);
-  background: linear-gradient(
-    180deg,
-    #66e3ff 0%,
-    #14b5ff 46%,
-    #0084e6 50%,
-    #0099f0 85%,
-    #3cd2ff 100%
-  );
-  border: 1px solid #0077cc;
-  box-shadow:
-    0 8px 20px -6px rgba(0, 130, 230, 0.55),
-    inset 0 1.5px 1px rgba(255, 255, 255, 0.88),
-    inset 0 -1.5px 2px rgba(0, 74, 150, 0.35);
-  transition: transform 0.16s ease, box-shadow 0.2s ease, filter 0.2s ease;
-}
-
-.aero-btn::before {
-  content: "";
-  position: absolute;
-  left: 3px;
-  right: 3px;
-  top: 2px;
-  height: 46%;
-  border-radius: 9999px / 55%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.14) 100%);
-  pointer-events: none;
-}
-
-.aero-btn:hover:not(:disabled) {
-  filter: brightness(1.06);
-  box-shadow:
-    0 12px 26px -6px rgba(0, 152, 245, 0.68),
-    0 0 16px rgba(72, 224, 255, 0.45),
-    inset 0 1.5px 1px rgba(255, 255, 255, 0.95);
-  transform: translateY(-1px);
-}
-
-.aero-btn:active:not(:disabled) {
-  transform: translateY(0) scale(0.985);
-  filter: brightness(0.97);
-}
-
-.aero-btn:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-  filter: grayscale(0.25);
-}
-
-/* Botão verde Eco-Emerald Glossy Gel */
-.aero-btn-green {
-  position: relative;
-  overflow: hidden;
-  color: #ffffff;
-  text-shadow: 0 1px 2px rgba(0, 72, 28, 0.45);
-  background: linear-gradient(
-    180deg,
-    #9df972 0%,
-    #39d961 46%,
-    #0fb347 50%,
-    #1cc958 85%,
-    #6ef289 100%
-  );
-  border: 1px solid #0c8f39;
-  box-shadow:
-    0 8px 20px -6px rgba(14, 172, 72, 0.52),
-    inset 0 1.5px 1px rgba(255, 255, 255, 0.88),
-    inset 0 -1.5px 2px rgba(0, 90, 35, 0.35);
-  transition: transform 0.16s ease, box-shadow 0.2s ease, filter 0.2s ease;
-}
-
-.aero-btn-green::before {
-  content: "";
-  position: absolute;
-  left: 3px;
-  right: 3px;
-  top: 2px;
-  height: 46%;
-  border-radius: 9999px / 55%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0.14) 100%);
-  pointer-events: none;
-}
-
-.aero-btn-green:hover:not(:disabled) {
-  filter: brightness(1.06);
-  box-shadow:
-    0 10px 24px -6px rgba(24, 198, 86, 0.65),
-    0 0 14px rgba(126, 250, 140, 0.45),
-    inset 0 1.5px 1px rgba(255, 255, 255, 0.95);
-  transform: translateY(-1px);
-}
-
-.aero-btn-green:active:not(:disabled) {
-  transform: translateY(0) scale(0.985);
-}
-
-/* Botão secundário Cristal / Vidro */
-.aero-btn-glass {
-  position: relative;
-  overflow: hidden;
-  color: #0b3c66;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.94) 0%,
-    rgba(232, 247, 255, 0.85) 48%,
-    rgba(206, 236, 252, 0.82) 52%,
-    rgba(234, 249, 255, 0.9) 100%
-  );
-  border: 1px solid rgba(108, 194, 238, 0.72);
-  box-shadow:
-    0 4px 12px -4px rgba(0, 102, 178, 0.2),
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.98);
-  transition: transform 0.16s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-.aero-btn-glass:hover:not(:disabled) {
-  border-color: #1fb8ff;
-  box-shadow:
-    0 8px 18px -6px rgba(0, 142, 230, 0.35),
-    0 0 12px rgba(96, 220, 255, 0.35),
-    inset 0 1.5px 0 rgba(255, 255, 255, 1);
-  transform: translateY(-1px);
-}
-
-.aero-btn-glass:active:not(:disabled) {
-  transform: translateY(0) scale(0.985);
-}
-
-/* Orbes 3D Glossy para ícones */
-.aero-orb {
-  position: relative;
-  overflow: hidden;
-  color: #ffffff;
-  background: radial-gradient(circle at 35% 22%, #9cf4ff 0%, #19b6ff 42%, #0077d4 82%, #00b2e6 100%);
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
-  box-shadow:
-    0 10px 24px -6px rgba(0, 134, 232, 0.55),
-    inset 0 2px 3px rgba(255, 255, 255, 0.9),
-    inset 0 -3px 6px rgba(0, 68, 136, 0.35);
-}
-
-.aero-orb::before {
-  content: "";
-  position: absolute;
-  top: 6%;
-  left: 14%;
-  right: 14%;
-  height: 44%;
-  border-radius: 9999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.82) 0%, rgba(255, 255, 255, 0.06) 100%);
-  pointer-events: none;
-}
-
-.aero-orb-green {
-  position: relative;
-  overflow: hidden;
-  color: #ffffff;
-  background: radial-gradient(circle at 35% 22%, #c3ff94 0%, #37da65 44%, #089c42 84%, #3be07e 100%);
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
-  box-shadow:
-    0 10px 22px -6px rgba(16, 174, 74, 0.5),
-    inset 0 2px 3px rgba(255, 255, 255, 0.88);
-}
-
-.aero-orb-green::before {
-  content: "";
-  position: absolute;
-  top: 6%;
-  left: 14%;
-  right: 14%;
-  height: 44%;
-  border-radius: 9999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.06) 100%);
-  pointer-events: none;
-}
-
-.aero-orb-amber {
-  position: relative;
-  overflow: hidden;
-  color: #ffffff;
-  background: radial-gradient(circle at 35% 22%, #fff08c 0%, #ffb626 44%, #e67600 84%, #ffc547 100%);
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
-  box-shadow:
-    0 10px 22px -6px rgba(235, 132, 0, 0.48),
-    inset 0 2px 3px rgba(255, 255, 255, 0.88);
-}
-
-.aero-orb-amber::before {
-  content: "";
-  position: absolute;
-  top: 6%;
-  left: 14%;
-  right: 14%;
-  height: 44%;
-  border-radius: 9999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.06) 100%);
-  pointer-events: none;
-}
-
-.aero-orb-red {
-  position: relative;
-  overflow: hidden;
-  color: #ffffff;
-  background: radial-gradient(circle at 35% 22%, #ff9cae 0%, #ff3b5f 44%, #c40e32 84%, #ff5c78 100%);
-  border: 1.5px solid rgba(255, 255, 255, 0.85);
-  box-shadow:
-    0 10px 22px -6px rgba(214, 24, 62, 0.5),
-    inset 0 2px 3px rgba(255, 255, 255, 0.88);
-}
-
-.aero-orb-red::before {
-  content: "";
-  position: absolute;
-  top: 6%;
-  left: 14%;
-  right: 14%;
-  height: 44%;
-  border-radius: 9999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.06) 100%);
-  pointer-events: none;
-}
-
-/* Badges / Pills glossy estilo Gel */
-.aero-pill {
-  position: relative;
-  overflow: hidden;
-  box-shadow:
-    0 4px 10px -3px rgba(0, 90, 155, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.85);
-}
-
-.aero-pill::before {
-  content: "";
-  position: absolute;
-  inset: 1px 2px auto 2px;
-  height: 48%;
-  border-radius: 9999px;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.62) 0%, rgba(255, 255, 255, 0.08) 100%);
-  pointer-events: none;
-}
-
-/* Faixa glossy de cabeçalho / destaque */
-.aero-gloss-banner {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(
-    180deg,
-    #52e0ff 0%,
-    #0aa8f5 46%,
-    #007ad4 52%,
-    #08a6d8 100%
-  );
-  box-shadow: inset 0 1.5px 0 rgba(255, 255, 255, 0.78);
-}
-
-.aero-gloss-banner::before {
-  content: "";
-  position: absolute;
-  top: -35%;
-  left: -10%;
-  right: -10%;
-  height: 85%;
-  border-radius: 50%;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.48) 0%, rgba(255, 255, 255, 0.04) 100%);
-  pointer-events: none;
-}
-
-/* Inputs de vidro cristalino */
-.aero-input {
-  width: 100%;
-  border-radius: 0.9rem;
-  border: 1.5px solid rgba(110, 198, 240, 0.62);
-  background: linear-gradient(180deg, rgba(242, 251, 255, 0.9) 0%, rgba(255, 255, 255, 0.96) 100%);
-  color: #092c4c;
-  padding: 0.75rem 1rem;
-  font-size: 0.95rem;
-  outline: none;
-  box-shadow:
-    inset 0 2px 4px rgba(0, 94, 168, 0.08),
-    0 1px 0 rgba(255, 255, 255, 0.9);
-  transition: border-color 0.16s ease, box-shadow 0.16s ease, background 0.16s ease;
-}
-
-.aero-input::placeholder {
-  color: #5b87a8;
-}
-
-.aero-input:focus {
-  border-color: #00a2ff;
-  background: #ffffff;
-  box-shadow:
-    0 0 0 3.5px rgba(0, 178, 255, 0.28),
-    0 4px 14px -4px rgba(0, 148, 235, 0.25),
-    inset 0 1px 3px rgba(0, 110, 195, 0.08);
-}
-
-/* Tiles selecionáveis (hospitais, planos, checkboxes) */
-.aero-tile {
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.85) 0%,
-    rgba(232, 248, 255, 0.72) 100%
-  );
-  border: 1.5px solid rgba(145, 214, 248, 0.65);
-  box-shadow:
-    0 6px 16px -8px rgba(0, 102, 180, 0.18),
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.95);
-  transition: all 0.18s ease;
-}
-
-.aero-tile:hover {
-  border-color: rgba(0, 168, 255, 0.8);
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(220, 246, 255, 0.85) 100%
-  );
-  box-shadow:
-    0 10px 22px -8px rgba(0, 138, 224, 0.28),
-    inset 0 1.5px 0 rgba(255, 255, 255, 1);
-}
-
-.aero-tile-active {
-  background: linear-gradient(
-    180deg,
-    rgba(224, 248, 255, 0.96) 0%,
-    rgba(196, 242, 255, 0.85) 55%,
-    rgba(218, 255, 234, 0.8) 100%
-  );
-  border: 1.5px solid #00a2ff;
-  box-shadow:
-    0 0 0 3px rgba(0, 178, 255, 0.24),
-    0 12px 24px -8px rgba(0, 136, 228, 0.34),
-    inset 0 1.5px 0 rgba(255, 255, 255, 0.98);
-}
-
-/* Slider líquido Frutiger Aero */
-.aero-range {
-  -webkit-appearance: none;
-  appearance: none;
-  height: 0.9rem;
-  border-radius: 9999px;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  background: linear-gradient(
-    to right,
-    currentColor var(--progress, 0%),
-    rgba(195, 232, 250, 0.72) var(--progress, 0%)
-  );
-  box-shadow:
-    inset 0 2px 4px rgba(0, 82, 148, 0.22),
-    0 2px 6px rgba(0, 128, 214, 0.18);
-  outline: none;
-}
-
-.aero-range::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  background: radial-gradient(circle at 32% 28%, #ffffff 0%, currentColor 58%, currentColor 100%);
-  cursor: pointer;
-  border: 2.5px solid #ffffff;
-  box-shadow:
-    0 4px 12px rgba(0, 90, 160, 0.4),
-    inset 0 2px 3px rgba(255, 255, 255, 0.85);
-  transition: transform 0.15s ease;
-}
-
-.aero-range::-webkit-slider-thumb:hover {
-  transform: scale(1.16);
-}
-
-.aero-range::-moz-range-thumb {
-  width: 1.75rem;
-  height: 1.75rem;
-  border-radius: 50%;
-  background: radial-gradient(circle at 32% 28%, #ffffff 0%, currentColor 58%, currentColor 100%);
-  cursor: pointer;
-  border: 2.5px solid #ffffff;
-  box-shadow:
-    0 4px 12px rgba(0, 90, 160, 0.4),
-    inset 0 2px 3px rgba(255, 255, 255, 0.85);
-  transition: transform 0.15s ease;
-}
-
-/* Animações atmosféricas sutis */
-@keyframes aero-bubble-float {
-  0%, 100% {
-    transform: translateY(0px) translateX(0px) scale(1);
-  }
-  50% {
-    transform: translateY(-18px) translateX(8px) scale(1.03);
-  }
-}
-
-@keyframes aero-aurora-drift {
-  0%, 100% {
-    transform: translateX(0px) skewX(0deg);
-    opacity: 0.72;
-  }
-  50% {
-    transform: translateX(18px) skewX(-2deg);
-    opacity: 0.9;
-  }
-}
-
-.aero-bubble {
-  border-radius: 9999px;
-  background: radial-gradient(
-    circle at 30% 26%,
-    rgba(255, 255, 255, 0.95) 0%,
-    rgba(255, 255, 255, 0.42) 22%,
-    rgba(130, 232, 255, 0.24) 55%,
-    rgba(96, 245, 168, 0.22) 82%,
-    rgba(255, 255, 255, 0.72) 100%
-  );
-  border: 1px solid rgba(255, 255, 255, 0.72);
-  box-shadow:
-    inset -6px -8px 18px rgba(0, 155, 235, 0.18),
-    inset 4px 5px 12px rgba(255, 255, 255, 0.85),
-    0 8px 24px rgba(0, 148, 224, 0.14);
-  animation: aero-bubble-float 9s ease-in-out infinite;
-}
-
-.aero-aurora {
-  animation: aero-aurora-drift 14s ease-in-out infinite;
-}
-
-/* Título com leve reflexo celeste */
-.aero-title-gradient {
-  background: linear-gradient(180deg, #0072d6 0%, #00a2e8 55%, #009c6d 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }

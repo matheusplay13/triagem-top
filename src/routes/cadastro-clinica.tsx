@@ -141,79 +141,81 @@ function CadastroClinicaPage() {
   }
 
   const selected = plan ? PLANS[plan] : null;
+  const inputCls =
+    "w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20";
 
   return (
-    <div className="aero-page pb-16">
+    <div className="min-h-screen bg-background">
       <AppNav />
       <main className="mx-auto grid max-w-6xl gap-10 px-4 py-12 lg:grid-cols-[1fr_1.3fr]">
         {/* ---------- Resumo do pedido ---------- */}
-        <section className="lg:sticky lg:top-24 lg:h-fit">
-          <div className="aero-pill inline-flex items-center gap-2 rounded-full border border-sky-300/80 bg-white/85 px-3.5 py-1 text-xs font-extrabold uppercase tracking-wider text-sky-800">
-            <Building2 className="relative z-10 h-3.5 w-3.5 text-sky-600" />
-            <span className="relative z-10">Para clínicas e hospitais</span>
+        <section className="animate-in fade-in slide-in-from-bottom-4 duration-700 lg:sticky lg:top-24 lg:h-fit">
+          <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold uppercase tracking-wider text-primary">
+            <Building2 className="h-3.5 w-3.5" /> Para clínicas
           </div>
-          <h1 className="aero-title-gradient mt-4 text-4xl font-black tracking-tight">
-            Cadastre sua clínica
+          <h1 className="mt-4 text-4xl font-black tracking-tight">
+            Cadastre sua <span className="text-primary">clínica</span>
           </h1>
-          <p className="mt-3 font-semibold text-sky-950/80">
+          <p className="mt-4 text-muted-foreground">
             Para criar a conta é necessário assinar um plano. Escolha o que melhor atende sua
             unidade e comece a usar na hora.
           </p>
 
-          <div className="aero-glass mt-8 rounded-3xl p-6">
-            <p className="text-xs font-extrabold uppercase tracking-widest text-sky-900/70">
+          <div
+            className={`mt-8 rounded-3xl border p-6 transition-all ${
+              selected ? "border-primary/40 bg-primary/5" : "border-dashed border-border bg-card"
+            }`}
+          >
+            <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
               Resumo do pedido
             </p>
             {selected ? (
               <>
                 <div className="mt-3 flex items-center justify-between gap-3">
-                  <h2 className="flex items-center gap-2 text-2xl font-black text-sky-950">
-                    {selected.id !== "normal" && <Crown className="h-5 w-5 text-sky-600" />}
+                  <h2 className="flex items-center gap-2 text-2xl font-black">
+                    {selected.id !== "normal" && <Crown className="h-5 w-5 text-primary" />}
                     Plano {selected.name}
                   </h2>
                   <div className="text-right">
-                    <span className="aero-title-gradient text-2xl font-black tracking-tight">
-                      R$ {selected.price}
-                    </span>
-                    <span className="text-xs font-bold text-muted-foreground"> / mês</span>
+                    <span className="text-2xl font-black tracking-tight">R$ {selected.price}</span>
+                    <span className="text-xs text-muted-foreground"> / mês</span>
                   </div>
                 </div>
                 <p className="mt-1 text-sm text-muted-foreground">{selected.description}</p>
                 <ul className="mt-5 space-y-2.5">
                   {selected.highlights.map((h) => (
-                    <li key={h} className="flex items-start gap-2.5 text-sm font-medium text-sky-950/90">
-                      <span className="aero-orb-green mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full">
-                        <Check className="relative z-10 h-2.5 w-2.5 text-white" />
-                      </span>
+                    <li key={h} className="flex items-start gap-2.5 text-sm">
+                      <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
                       <span>{h}</span>
                     </li>
                   ))}
                 </ul>
-                <div className="mt-6 flex items-center justify-between border-t border-white/80 pt-4 text-sm">
-                  <span className="font-extrabold text-sky-950">Total hoje</span>
-                  <span className="text-lg font-black text-sky-800">R$ {selected.price}</span>
+                <div className="mt-6 flex items-center justify-between border-t border-border pt-4 text-sm">
+                  <span className="font-bold">Total hoje</span>
+                  <span className="font-black">R$ {selected.price}</span>
                 </div>
               </>
             ) : (
-              <p className="mt-3 text-sm font-semibold text-muted-foreground">
+              <p className="mt-3 text-sm text-muted-foreground">
                 Nenhum plano selecionado. Escolha um plano ao lado para continuar.
               </p>
             )}
           </div>
 
-          <div className="aero-glass-card mt-4 flex items-start gap-2.5 rounded-2xl p-3.5 text-xs text-sky-900/80">
-            <Info className="mt-0.5 h-4 w-4 shrink-0 text-sky-600" />
-            <span>
-              Ambiente de demonstração: o pagamento é simulado e nenhum valor é cobrado. Use
-              qualquer número de cartão com 16 dígitos.
-            </span>
-          </div>
+          <p className="mt-4 flex items-start gap-2 text-xs text-muted-foreground">
+            <Info className="mt-0.5 h-3.5 w-3.5 shrink-0" />
+            Ambiente de demonstração: o pagamento é simulado e nenhum valor é cobrado. Use qualquer
+            número de cartão com 16 dígitos.
+          </p>
         </section>
 
         {/* ---------- Formulário ---------- */}
-        <form onSubmit={handleSubmit} className="aero-glass space-y-6 rounded-3xl p-6 sm:p-8">
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8 animate-in fade-in slide-in-from-bottom-8 duration-700"
+        >
           <fieldset className="space-y-3">
-            <legend className="mb-2 text-xs font-extrabold uppercase tracking-widest text-sky-900/75">
+            <legend className="mb-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
               1. Escolha o plano *
             </legend>
             <div className="grid gap-3 sm:grid-cols-3" role="radiogroup" aria-label="Plano">
@@ -227,56 +229,48 @@ function CadastroClinicaPage() {
                     role="radio"
                     aria-checked={active}
                     onClick={() => setPlan(p.id)}
-                    className={`relative rounded-2xl p-4 text-left hover:-translate-y-0.5 ${
-                      active ? "aero-tile-active" : "aero-tile"
+                    className={`relative rounded-2xl border p-4 text-left transition-all hover:-translate-y-0.5 hover:shadow-md ${
+                      active
+                        ? "border-primary bg-primary/5 ring-2 ring-primary/30"
+                        : "border-border bg-background hover:border-primary/40"
                     }`}
                   >
                     {p.popular && (
-                      <span className="aero-pill absolute -top-2.5 right-3 flex items-center gap-1 rounded-full border border-sky-700/80 bg-[linear-gradient(180deg,#64e2ff_0%,#0ea9f5_48%,#007dd8_52%,#22bdf5_100%)] px-2.5 py-0.5 text-[10px] font-extrabold uppercase text-white">
-                        <Star className="relative z-10 h-2.5 w-2.5 fill-current" />
-                        <span className="relative z-10">Popular</span>
+                      <span className="absolute -top-2.5 right-3 flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase text-primary-foreground">
+                        <Star className="h-2.5 w-2.5 fill-current" /> Popular
                       </span>
                     )}
                     <div className="flex items-center justify-between">
-                      <span className="font-extrabold text-sky-950">{p.name}</span>
+                      <span className="font-bold">{p.name}</span>
                       <span
-                        className={`flex h-5 w-5 items-center justify-center rounded-full border ${
-                          active
-                            ? "aero-orb border-white text-white"
-                            : "border-sky-300 bg-white/80"
+                        className={`flex h-4 w-4 items-center justify-center rounded-full border ${
+                          active ? "border-primary bg-primary text-primary-foreground" : "border-border"
                         }`}
                       >
-                        {active && <Check className="relative z-10 h-3 w-3" />}
+                        {active && <Check className="h-3 w-3" />}
                       </span>
                     </div>
-                    <div className="mt-2 text-lg font-black tracking-tight text-sky-900">
-                      R$ {p.price}
-                    </div>
-                    <div className="text-xs font-semibold text-muted-foreground">
+                    <div className="mt-2 text-lg font-black tracking-tight">R$ {p.price}</div>
+                    <div className="text-xs text-muted-foreground">
                       {p.maxDoctors === null ? "Médicos ilimitados" : `Até ${p.maxDoctors} médicos`}
                     </div>
                   </button>
                 );
               })}
             </div>
-            <Link
-              to="/planos"
-              className="inline-block text-xs font-extrabold text-sky-700 hover:underline"
-            >
+            <Link to="/planos" className="inline-block text-xs font-medium text-primary hover:underline">
               Comparar planos em detalhes
             </Link>
           </fieldset>
 
-          <hr className="border-white/75" />
-
           <fieldset className="space-y-4">
-            <legend className="mb-2 text-xs font-extrabold uppercase tracking-widest text-sky-900/75">
+            <legend className="mb-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
               2. Dados da clínica
             </legend>
             <Field id="clinic-name" label="Nome da clínica *">
               <input
                 id="clinic-name"
-                className="aero-input"
+                className={inputCls}
                 value={form.clinicName}
                 onChange={set("clinicName")}
                 required
@@ -288,7 +282,7 @@ function CadastroClinicaPage() {
                   id="clinic-cnpj"
                   inputMode="numeric"
                   maxLength={18}
-                  className="aero-input"
+                  className={inputCls}
                   value={form.cnpj}
                   onChange={(e) => setForm((f) => ({ ...f, cnpj: formatCnpj(e.target.value) }))}
                   placeholder="00.000.000/0000-00"
@@ -299,7 +293,7 @@ function CadastroClinicaPage() {
                   id="clinic-phone"
                   inputMode="numeric"
                   maxLength={15}
-                  className="aero-input"
+                  className={inputCls}
                   value={form.phone}
                   onChange={(e) => setForm((f) => ({ ...f, phone: formatPhone(e.target.value) }))}
                   placeholder="(11) 99999-9999"
@@ -309,23 +303,21 @@ function CadastroClinicaPage() {
             <Field id="clinic-address" label="Endereço">
               <input
                 id="clinic-address"
-                className="aero-input"
+                className={inputCls}
                 value={form.address}
                 onChange={set("address")}
               />
             </Field>
           </fieldset>
 
-          <hr className="border-white/75" />
-
           <fieldset className="space-y-4">
-            <legend className="mb-2 text-xs font-extrabold uppercase tracking-widest text-sky-900/75">
+            <legend className="mb-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
               3. Conta do gestor
             </legend>
             <Field id="admin-name" label="Seu nome *">
               <input
                 id="admin-name"
-                className="aero-input"
+                className={inputCls}
                 value={form.adminName}
                 onChange={set("adminName")}
                 required
@@ -335,7 +327,7 @@ function CadastroClinicaPage() {
               <input
                 id="admin-email"
                 type="email"
-                className="aero-input"
+                className={inputCls}
                 value={form.email}
                 onChange={set("email")}
                 required
@@ -346,7 +338,7 @@ function CadastroClinicaPage() {
                 <input
                   id="admin-password"
                   type="password"
-                  className="aero-input"
+                  className={inputCls}
                   value={form.password}
                   onChange={set("password")}
                   required
@@ -356,7 +348,7 @@ function CadastroClinicaPage() {
                 <input
                   id="admin-confirm"
                   type="password"
-                  className="aero-input"
+                  className={inputCls}
                   value={form.confirm}
                   onChange={set("confirm")}
                   required
@@ -365,19 +357,17 @@ function CadastroClinicaPage() {
             </div>
           </fieldset>
 
-          <hr className="border-white/75" />
-
           <fieldset className="space-y-4">
-            <legend className="mb-2 flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-sky-900/75">
+            <legend className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
               4. Pagamento
-              <span className="aero-pill rounded-full border border-amber-500/80 bg-[linear-gradient(180deg,#fff08a_0%,#ffc226_50%,#eb8b00_100%)] px-2.5 py-0.5 text-[10px] font-extrabold text-amber-950">
-                <span className="relative z-10">Simulado</span>
+              <span className="rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] text-amber-600 dark:text-amber-400">
+                Simulado
               </span>
             </legend>
             <Field id="card-holder" label="Nome no cartão *">
               <input
                 id="card-holder"
-                className="aero-input"
+                className={inputCls}
                 value={card.holder}
                 onChange={(e) => setCard((c) => ({ ...c, holder: e.target.value }))}
                 required
@@ -385,11 +375,11 @@ function CadastroClinicaPage() {
             </Field>
             <Field id="card-number" label="Número do cartão *">
               <div className="relative">
-                <CreditCard className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-sky-600" />
+                <CreditCard className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
                 <input
                   id="card-number"
                   inputMode="numeric"
-                  className="aero-input pl-11 tracking-wider"
+                  className={`${inputCls} pl-11 tracking-wider`}
                   placeholder="0000 0000 0000 0000"
                   value={card.number}
                   onChange={(e) => setCard((c) => ({ ...c, number: formatCard(e.target.value) }))}
@@ -402,7 +392,7 @@ function CadastroClinicaPage() {
                 <input
                   id="card-expiry"
                   inputMode="numeric"
-                  className="aero-input"
+                  className={inputCls}
                   placeholder="MM/AA"
                   value={card.expiry}
                   onChange={(e) => setCard((c) => ({ ...c, expiry: formatExpiry(e.target.value) }))}
@@ -413,7 +403,7 @@ function CadastroClinicaPage() {
                 <input
                   id="card-cvv"
                   inputMode="numeric"
-                  className="aero-input"
+                  className={inputCls}
                   placeholder="123"
                   value={card.cvv}
                   onChange={(e) =>
@@ -425,19 +415,17 @@ function CadastroClinicaPage() {
             </div>
           </fieldset>
 
-          <hr className="border-white/75" />
-
           <fieldset className="space-y-3">
-            <legend className="mb-2 flex items-center justify-between text-xs font-extrabold uppercase tracking-widest text-sky-900/75">
+            <legend className="mb-2 flex items-center justify-between text-xs font-bold uppercase tracking-widest text-muted-foreground">
               <span className="flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-emerald-600" />
+                <ShieldCheck className="h-3.5 w-3.5 text-primary" />
                 5. Termos Legais, LGPD e Uso Exclusivo *
               </span>
               <a
                 href="/termos"
                 target="_blank"
                 rel="noreferrer"
-                className="font-extrabold normal-case tracking-normal text-sky-700 hover:underline"
+                className="font-bold normal-case tracking-normal text-primary hover:underline"
               >
                 Ler termos completos
               </a>
@@ -445,8 +433,10 @@ function CadastroClinicaPage() {
 
             <label
               htmlFor="clinic-exclusive-use"
-              className={`flex cursor-pointer items-start gap-3 rounded-2xl p-4 ${
-                exclusiveUseAccepted ? "aero-tile-active" : "aero-tile"
+              className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition ${
+                exclusiveUseAccepted
+                  ? "border-primary/50 bg-primary/5"
+                  : "border-border bg-background hover:border-primary/40"
               }`}
             >
               <input
@@ -454,10 +444,10 @@ function CadastroClinicaPage() {
                 type="checkbox"
                 checked={exclusiveUseAccepted}
                 onChange={(e) => setExclusiveUseAccepted(e.target.checked)}
-                className="mt-1 h-4 w-4 shrink-0 accent-sky-600"
+                className="mt-1 h-4 w-4 shrink-0 accent-primary"
               />
               <span className="text-xs leading-relaxed">
-                <strong className="block text-sm font-extrabold text-sky-950">
+                <strong className="block text-sm text-foreground">
                   Termo de Uso Exclusivo e Obrigatório do Sistema Sem Espera *
                 </strong>
                 <span className="mt-0.5 block text-muted-foreground">
@@ -470,8 +460,10 @@ function CadastroClinicaPage() {
 
             <label
               htmlFor="clinic-terms-lgpd"
-              className={`flex cursor-pointer items-start gap-3 rounded-2xl p-4 ${
-                termsAccepted ? "aero-tile-active" : "aero-tile"
+              className={`flex cursor-pointer items-start gap-3 rounded-2xl border p-4 transition ${
+                termsAccepted
+                  ? "border-primary/50 bg-primary/5"
+                  : "border-border bg-background hover:border-primary/40"
               }`}
             >
               <input
@@ -479,10 +471,10 @@ function CadastroClinicaPage() {
                 type="checkbox"
                 checked={termsAccepted}
                 onChange={(e) => setTermsAccepted(e.target.checked)}
-                className="mt-1 h-4 w-4 shrink-0 accent-sky-600"
+                className="mt-1 h-4 w-4 shrink-0 accent-primary"
               />
               <span className="text-xs leading-relaxed">
-                <strong className="block text-sm font-extrabold text-sky-950">
+                <strong className="block text-sm text-foreground">
                   Termos de Uso, Proteção de Dados (LGPD) e Transferências *
                 </strong>
                 <span className="mt-0.5 block text-muted-foreground">
@@ -495,7 +487,7 @@ function CadastroClinicaPage() {
           </fieldset>
 
           {error && (
-            <p className="rounded-2xl border border-rose-300 bg-rose-100/90 px-4 py-2.5 text-sm font-bold text-rose-700">
+            <p className="rounded-xl bg-destructive/10 px-4 py-2.5 text-sm font-medium text-destructive">
               {error}
             </p>
           )}
@@ -504,27 +496,20 @@ function CadastroClinicaPage() {
             id="clinic-register-submit"
             type="submit"
             disabled={loading || !plan || !termsAccepted || !exclusiveUseAccepted}
-            className="aero-btn flex w-full items-center justify-center gap-2 rounded-full py-4 text-sm font-extrabold"
+            className="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:opacity-90 active:scale-95 disabled:opacity-60"
           >
-            {loading ? (
-              <Loader2 className="relative z-10 h-4 w-4 animate-spin" />
-            ) : (
-              <Lock className="relative z-10 h-4 w-4" />
-            )}
-            <span className="relative z-10">
-              {step === "paying"
-                ? "Processando pagamento..."
-                : step === "creating"
-                  ? "Criando sua clínica..."
-                  : selected
-                    ? `Assinar ${selected.name} e cadastrar — R$ ${selected.price}/mês`
-                    : "Escolha um plano para continuar"}
-            </span>
+            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
+            {step === "paying"
+              ? "Processando pagamento..."
+              : step === "creating"
+                ? "Criando sua clínica..."
+                : selected
+                  ? `Assinar ${selected.name} e cadastrar — R$ ${selected.price}/mês`
+                  : "Escolha um plano para continuar"}
           </button>
-
-          <p className="text-center text-sm font-semibold text-sky-950/75">
+          <p className="text-center text-sm text-muted-foreground">
             Já tem conta?{" "}
-            <Link to="/login" className="font-extrabold text-sky-700 hover:underline">
+            <Link to="/login" className="font-bold text-primary hover:underline">
               Entrar
             </Link>
           </p>
@@ -545,7 +530,7 @@ function Field({
 }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-2 block text-sm font-extrabold text-sky-950">
+      <label htmlFor={id} className="mb-2 block text-sm font-bold">
         {label}
       </label>
       {children}
