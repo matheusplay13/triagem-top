@@ -1,6 +1,7 @@
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import {
   getPatientsFn,
+  getPublicClinicsFn,
   createPatientFn,
   updatePatientStatusFn,
   removePatientFn,
@@ -8,7 +9,37 @@ import {
 } from "./api/triage.functions";
 
 export type Priority = "high" | "medium" | "low";
-export type PatientStatus = "waiting" | "in_service" | "done";
+export type PatientStatus = "waiting" | "in_service" | "done" | "transferred";
+
+export interface ClinicSummary {
+  id: string;
+  name: string;
+  address: string | null;
+  phone: string | null;
+}
+
+export interface PublicClinic extends ClinicSummary {
+  exclusiveUseAccepted: boolean;
+  waitingCount: number;
+}
+
+export interface PatientTransferSummary {
+  id: string;
+  protocol: string;
+  fromClinicId: string | null;
+  toClinicId: string | null;
+  destinationUsesSystem: boolean;
+  externalHospitalName: string | null;
+  externalHospitalAddress: string | null;
+  externalHospitalPhone: string | null;
+  reason: string;
+  clinicalNotes: string | null;
+  transferredBy: string | null;
+  status: string;
+  createdAt: string | Date;
+  fromClinic: ClinicSummary | null;
+  toClinic: ClinicSummary | null;
+}
 
 export interface Patient {
   id: string;
@@ -26,12 +57,27 @@ export interface Patient {
   calledAt?: number;
   finishedAt?: number;
   ticket: string;
+  clinicId: string | null;
+  clinic: ClinicSummary | null;
+  lgpdConsent: boolean;
+  truthfulnessConsent: boolean;
+  exclusiveSystemConsent: boolean;
+  termsAcceptedAt?: number;
+  transfers: PatientTransferSummary[];
 }
 
-export function usePatients(): Patient[] {
+export function usePublicClinics() {
+  return useQuery({
+    queryKey: ["public-clinics"],
+    queryFn: () => getPublicClinicsFn(),
+    refetchInterval: 10000,
+  });
+}
+
+export function usePatients(clinicId?: string): Patient[] {
   const { data } = useQuery({
-    queryKey: ["patients"],
-    queryFn: () => getPatientsFn(),
+    queryKey: ["patients", clinicId ?? "all"],
+    queryFn: () => getPatientsFn({ data: clinicId ? { clinicId } : undefined }),
     refetchInterval: 2000, // Atualiza a cada 2 segundos
   });
 
@@ -43,6 +89,8 @@ export function usePatients(): Patient[] {
     arrivedAt: new Date(p.arrivedAt).getTime(),
     calledAt: p.calledAt ? new Date(p.calledAt).getTime() : undefined,
     finishedAt: p.finishedAt ? new Date(p.finishedAt).getTime() : undefined,
+    termsAcceptedAt: p.termsAcceptedAt ? new Date(p.termsAcceptedAt).getTime() : undefined,
+    transfers: p.transfers ?? [],
   }));
 }
 
@@ -55,9 +103,13 @@ export interface TriageInput {
   hasFever: boolean;
   hasBreathingIssue: boolean;
   hasChestPain: boolean;
+  clinicId: string;
+  lgpdConsent: true;
+  truthfulnessConsent: true;
+  exclusiveSystemConsent: true;
 }
 
-export function classifyPriority(t: TriageInput): Priority {
+export function classifyPriority(t: Pick<TriageInput, "age" | "painLevel" | "hasFever" | "hasBreathingIssue" | "hasChestPain">): Priority {
   if (t.hasChestPain || t.hasBreathingIssue || t.painLevel >= 8) return "high";
   if (t.age >= 65 || t.age <= 2) return "high";
   if (t.hasFever && t.painLevel >= 5) return "high";
@@ -78,6 +130,8 @@ export async function addPatient(input: TriageInput): Promise<Patient> {
     arrivedAt: new Date(result.arrivedAt).getTime(),
     calledAt: undefined,
     finishedAt: undefined,
+    termsAcceptedAt: result.termsAcceptedAt ? new Date(result.termsAcceptedAt).getTime() : undefined,
+    transfers: result.transfers ?? [],
   };
 }
 
@@ -109,8 +163,8 @@ export async function removePatient(id: string): Promise<void> {
   await removePatientFn({ data: { id } });
 }
 
-export async function clearAll(): Promise<void> {
-  await clearAllFn();
+export async function clearAll(clinicId?: string): Promise<void> {
+  await clearAllFn({ data: clinicId ? { clinicId } : undefined });
 }
 
 export const priorityLabel: Record<Priority, string> = {

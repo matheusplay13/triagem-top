@@ -44,29 +44,25 @@ function LoginPage() {
     }
   }
 
-  const inputCls =
-    "w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none transition-all focus:border-primary focus:ring-2 focus:ring-primary/20";
-
   return (
-    <div className="min-h-screen bg-background">
+    <div className="aero-page pb-16">
       <AppNav />
-      <main className="mx-auto flex max-w-sm flex-col items-center justify-center px-4 pt-20 pb-16">
-        <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-          <Lock className="h-8 w-8" />
+      <main className="mx-auto flex max-w-sm flex-col items-center justify-center px-4 pt-16 pb-16">
+        <div className="aero-orb mb-6 flex h-18 w-18 items-center justify-center rounded-3xl">
+          <Lock className="relative z-10 h-9 w-9 text-white" />
         </div>
         <div className="mb-8 text-center">
-          <h1 className="text-2xl font-bold tracking-tight">Acesso da Equipe</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <h1 className="aero-title-gradient text-3xl font-black tracking-tight">
+            Acesso da Equipe
+          </h1>
+          <p className="mt-2 text-sm font-semibold text-sky-950/75">
             Área restrita para gestores e médicos cadastrados pela clínica.
           </p>
         </div>
 
-        <form
-          onSubmit={handleLogin}
-          className="w-full space-y-4 rounded-3xl border border-border bg-card p-6 shadow-sm"
-        >
+        <form onSubmit={handleLogin} className="aero-glass w-full space-y-4 rounded-3xl p-6">
           <div>
-            <label htmlFor="login-email" className="mb-2 block text-sm font-bold">
+            <label htmlFor="login-email" className="mb-2 block text-sm font-extrabold text-sky-950">
               E-mail corporativo
             </label>
             <input
@@ -74,13 +70,16 @@ function LoginPage() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className={inputCls}
+              className="aero-input"
               placeholder="voce@suaclinica.com"
               required
             />
           </div>
           <div>
-            <label htmlFor="login-password" className="mb-2 block text-sm font-bold">
+            <label
+              htmlFor="login-password"
+              className="mb-2 block text-sm font-extrabold text-sky-950"
+            >
               Senha
             </label>
             <input
@@ -88,12 +87,12 @@ function LoginPage() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className={inputCls}
+              className="aero-input"
               required
             />
           </div>
           {error && (
-            <p className="rounded-xl bg-destructive/10 px-4 py-2.5 text-sm font-medium text-destructive">
+            <p className="rounded-2xl border border-rose-300 bg-rose-100/90 px-4 py-2.5 text-sm font-bold text-rose-700">
               {error}
             </p>
           )}
@@ -101,18 +100,22 @@ function LoginPage() {
             id="login-submit"
             type="submit"
             disabled={loading}
-            className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-3.5 text-sm font-bold text-primary-foreground transition-all hover:opacity-90 active:scale-95 disabled:opacity-60"
+            className="aero-btn mt-2 flex w-full items-center justify-center gap-2 rounded-full py-3.5 text-sm font-extrabold"
           >
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <LogIn className="h-4 w-4" />}
-            Entrar no sistema
+            {loading ? (
+              <Loader2 className="relative z-10 h-4 w-4 animate-spin" />
+            ) : (
+              <LogIn className="relative z-10 h-4 w-4" />
+            )}
+            <span className="relative z-10">Entrar no sistema</span>
           </button>
         </form>
 
         <Link
           to="/cadastro-clinica"
-          className="mt-6 flex items-center gap-2 text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
+          className="aero-btn-glass mt-6 inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-xs font-extrabold"
         >
-          <Building2 className="h-4 w-4" /> Sua clínica ainda não tem conta? Cadastre-se
+          <Building2 className="h-4 w-4 text-sky-600" /> Sua clínica ainda não tem conta? Cadastre-se
         </Link>
       </main>
     </div>
