@@ -1,0 +1,450 @@
+import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
+import { transferPatientFn } from "@/lib/api/triage.functions";
+import {
+  priorityLabel,
+  usePublicClinics,
+  type Patient,
+  type Priority,
+} from "@/lib/triage-store";
+import { formatTransferReportText, type TransferReportInput } from "@/lib/legal";
+import { PriorityBadge } from "@/components/PriorityBadge";
+import {
+  ArrowLeftRight,
+  Building2,
+  Check,
+  CheckCircle2,
+  Copy,
+  ExternalLink,
+  Loader2,
+  Printer,
+  X,
+} from "lucide-react";
+
+export function printTransferReport(report: TransferReportInput) {
+  const text = formatTransferReportText(report);
+  const win = window.open("", "_blank", "width=800,height=700");
+  if (!win) {
+    window.print();
+    return;
+  }
+  const escaped = text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+  win.document.write(`<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <title>Guia de Transferência ${report.protocol}</title>
+  <style>
+    body { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding: 32px; color: #092c4c; line-height: 1.5; background: #f2fbff; }
+    pre { white-space: pre-wrap; font-size: 13px; border: 1.5px solid #8bd4f5; background: #fff; padding: 24px; border-radius: 14px; }
+  </style>
+</head>
+<body>
+  <pre>${escaped}</pre>
+  <script>window.onload = function () { window.print(); };</script>
+</body>
+</html>`);
+  win.document.close();
+}
+
+interface TransferPatientModalProps {
+  patient: Patient | null;
+  token: string;
+  currentClinicId: string;
+  currentClinicName: string;
+  onClose: () => void;
+  onTransferred?: () => void;
+}
+
+export function TransferPatientModal({
+  patient,
+  token,
+  currentClinicId,
+  currentClinicName,
+  onClose,
+  onTransferred,
+}: TransferPatientModalProps) {
+  const qc = useQueryClient();
+  const clinicsQuery = usePublicClinics();
+  const otherClinics = (clinicsQuery.data ?? []).filter((c) => c.id !== currentClinicId);
+
+  const [usesSystem, setUsesSystem] = useState<boolean>(true);
+  const [toClinicId, setToClinicId] = useState<string>("");
+  const [externalName, setExternalName] = useState("");
+  const [externalAddress, setExternalAddress] = useState("");
+  const [externalPhone, setExternalPhone] = useState("");
+  const [reason, setReason] = useState("");
+  const [clinicalNotes, setClinicalNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [completedReport, setCompletedReport] = useState<TransferReportInput | null>(null);
+  const [copied, setCopied] = useState(false);
+
+  if (!patient) return null;
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!patient) return;
+    setError(null);
+
+    if (usesSystem && !toClinicId) {
+      return setError("Selecione o hospital parceiro de destino.");
+    }
+    if (!usesSystem && externalName.trim().length < 2) {
+      return setError("Informe o nome do hospital externo de destino.");
+    }
+    if (reason.trim().length < 3) {
+      return setError("Informe o motivo da transferência.");
+    }
+
+    setSubmitting(true);
+    try {
+      const result = await transferPatientFn({
+        data: {
+          token,
+          patientId: patient.id,
+          destinationUsesSystem: usesSystem,
+          toClinicId: usesSystem ? toClinicId : undefined,
+          externalHospitalName: usesSystem ? undefined : externalName.trim(),
+          externalHospitalAddress: usesSystem ? undefined : externalAddress.trim() || undefined,
+          externalHospitalPhone: usesSystem ? undefined : externalPhone.trim() || undefined,
+          reason: reason.trim(),
+          clinicalNotes: clinicalNotes.trim() || undefined,
+        },
+      });
+
+      const destName = result.destinationUsesSystem
+        ? result.toClinic?.name ?? "Hospital parceiro"
+        : result.externalHospitalName ?? externalName.trim();
+      const destAddress = result.destinationUsesSystem
+        ? result.toClinic?.address
+        : result.externalHospitalAddress;
+      const destPhone = result.destinationUsesSystem
+        ? result.toClinic?.phone
+        : result.externalHospitalPhone;
+
+      setCompletedReport({
+        protocol: result.protocol,
+        createdAt: result.createdAt,
+        patientName: result.patient.name,
+        patientAge: result.patient.age,
+        patientDocument: result.patient.document,
+        patientTicket: result.patient.ticket,
+        priorityLabel:
+          priorityLabel[(result.patient.priority as Priority) ?? "low"] ?? result.patient.priority,
+        symptoms: result.patient.symptoms,
+        painLevel: result.patient.painLevel,
+        hasFever: result.patient.hasFever,
+        hasBreathingIssue: result.patient.hasBreathingIssue,
+        hasChestPain: result.patient.hasChestPain,
+        fromClinicName: result.fromClinic?.name ?? currentClinicName,
+        destinationUsesSystem: result.destinationUsesSystem,
+        destinationName: destName,
+        destinationAddress: destAddress,
+        destinationPhone: destPhone,
+        reason: result.reason,
+        clinicalNotes: result.clinicalNotes,
+        transferredBy: result.transferredBy,
+      });
+
+      await Promise.all([
+        qc.invalidateQueries({ queryKey: ["patients"] }),
+        qc.invalidateQueries({ queryKey: ["transfers"] }),
+        qc.invalidateQueries({ queryKey: ["public-clinics"] }),
+      ]);
+      onTransferred?.();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Erro ao transferir paciente.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
+
+  async function handleCopy() {
+    if (!completedReport) return;
+    await navigator.clipboard.writeText(formatTransferReportText(completedReport));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
+  }
+
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-sky-950/45 p-4 backdrop-blur-md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="transfer-modal-title"
+    >
+      <div className="aero-glass max-h-[90vh] w-full max-w-xl overflow-y-auto rounded-3xl p-6">
+        <div className="mb-5 flex items-start justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="aero-orb flex h-11 w-11 items-center justify-center rounded-2xl">
+              <ArrowLeftRight className="relative z-10 h-5 w-5" />
+            </div>
+            <div>
+              <h2 id="transfer-modal-title" className="text-lg font-extrabold text-sky-950">
+                Transferir Paciente
+              </h2>
+              <p className="text-xs font-medium text-muted-foreground">
+                Origem: {currentClinicName}
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="aero-btn-glass rounded-full p-2 text-sky-900"
+            aria-label="Fechar"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* Resumo do paciente */}
+        <div className="aero-glass-card mb-5 flex flex-wrap items-center justify-between gap-2 rounded-2xl px-4 py-3 text-sm">
+          <div>
+            <span className="mr-2 font-black text-sky-700">{patient.ticket}</span>
+            <span className="font-extrabold text-sky-950">{patient.name}</span>
+            <span className="ml-2 text-xs text-muted-foreground">{patient.age} anos</span>
+          </div>
+          <PriorityBadge priority={patient.priority} size="sm" />
+        </div>
+
+        {completedReport ? (
+          <div className="space-y-4">
+            <div className="flex items-start gap-3 rounded-2xl border border-emerald-400/70 bg-emerald-100/75 p-4 text-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.9)]">
+              <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-700" />
+              <div>
+                <p className="font-extrabold text-emerald-950">
+                  Transferência registrada — Protocolo {completedReport.protocol}
+                </p>
+                <p className="mt-1 text-xs text-emerald-900/85">
+                  {completedReport.destinationUsesSystem
+                    ? `O paciente foi transferido eletronicamente para a fila de ${completedReport.destinationName} com os dados clínicos preservados.`
+                    : `Como ${completedReport.destinationName} não utiliza o sistema Sem Espera, a senha foi encerrada nesta unidade como "Transferido". Utilize a guia abaixo para entrega presencial ou envio à equipe receptora.`}
+                </p>
+              </div>
+            </div>
+
+            <pre className="max-h-64 overflow-auto rounded-2xl border border-sky-200/90 bg-white/90 p-4 text-xs leading-relaxed text-sky-950 shadow-inner">
+              {formatTransferReportText(completedReport)}
+            </pre>
+
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={() => printTransferReport(completedReport)}
+                className="aero-btn inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold"
+              >
+                <Printer className="relative z-10 h-4 w-4" />
+                <span className="relative z-10">Imprimir Guia</span>
+              </button>
+              <button
+                type="button"
+                onClick={handleCopy}
+                className="aero-btn-glass inline-flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-bold"
+              >
+                {copied ? (
+                  <Check className="h-4 w-4 text-emerald-600" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+                {copied ? "Copiado" : "Copiar Resumo"}
+              </button>
+            </div>
+
+            <button
+              type="button"
+              onClick={onClose}
+              className="aero-btn-glass w-full rounded-full py-2.5 text-sm font-bold"
+            >
+              Fechar
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Tipo de hospital de destino */}
+            <div>
+              <label className="mb-2 block text-xs font-extrabold uppercase tracking-wider text-sky-900/80">
+                O hospital de destino utiliza o sistema Sem Espera?
+              </label>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUsesSystem(true);
+                    setError(null);
+                  }}
+                  className={`rounded-2xl p-3.5 text-left ${
+                    usesSystem ? "aero-tile-active" : "aero-tile"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 text-sm font-extrabold text-sky-950">
+                    <Building2 className="h-4 w-4 text-sky-600" />
+                    Sim, usa o Sem Espera
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Envia direto para a fila digital do hospital parceiro com histórico preservado.
+                  </p>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setUsesSystem(false);
+                    setError(null);
+                  }}
+                  className={`rounded-2xl p-3.5 text-left ${
+                    !usesSystem ? "aero-tile-active" : "aero-tile"
+                  }`}
+                >
+                  <div className="flex items-center gap-2 text-sm font-extrabold text-sky-950">
+                    <ExternalLink className="h-4 w-4 text-emerald-600" />
+                    Não, hospital externo
+                  </div>
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Encerra nesta fila e gera Guia de Transferência imprimível/copiável.
+                  </p>
+                </button>
+              </div>
+            </div>
+
+            {usesSystem ? (
+              <div>
+                <label htmlFor="transfer-clinic" className="mb-1.5 block text-sm font-extrabold text-sky-950">
+                  Hospital parceiro de destino *
+                </label>
+                {otherClinics.length === 0 ? (
+                  <div className="aero-glass-card rounded-2xl p-3.5 text-xs text-muted-foreground">
+                    Não há outros hospitais cadastrados no sistema no momento. Selecione a opção{" "}
+                    <strong>"Não, hospital externo"</strong> acima para registrar uma transferência
+                    externa com guia clínica.
+                  </div>
+                ) : (
+                  <select
+                    id="transfer-clinic"
+                    className="aero-input"
+                    value={toClinicId}
+                    onChange={(e) => setToClinicId(e.target.value)}
+                    required
+                  >
+                    <option value="">Selecione a unidade de destino...</option>
+                    {otherClinics.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.name}
+                        {c.address ? ` — ${c.address}` : ""} ({c.waitingCount} na fila)
+                      </option>
+                    ))}
+                  </select>
+                )}
+              </div>
+            ) : (
+              <div className="aero-glass-card space-y-3 rounded-2xl p-4">
+                <p className="text-xs font-extrabold uppercase tracking-wider text-sky-900/75">
+                  Dados do hospital externo (fora do sistema)
+                </p>
+                <div>
+                  <label htmlFor="ext-hospital-name" className="mb-1 block text-xs font-bold text-sky-950">
+                    Nome do hospital de destino *
+                  </label>
+                  <input
+                    id="ext-hospital-name"
+                    className="aero-input"
+                    placeholder="Ex: Hospital Municipal São Lucas"
+                    value={externalName}
+                    onChange={(e) => setExternalName(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <div>
+                    <label htmlFor="ext-hospital-address" className="mb-1 block text-xs font-bold text-sky-950">
+                      Endereço / Cidade
+                    </label>
+                    <input
+                      id="ext-hospital-address"
+                      className="aero-input"
+                      placeholder="Ex: Av. Central, 500"
+                      value={externalAddress}
+                      onChange={(e) => setExternalAddress(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="ext-hospital-phone" className="mb-1 block text-xs font-bold text-sky-950">
+                      Telefone da unidade
+                    </label>
+                    <input
+                      id="ext-hospital-phone"
+                      className="aero-input"
+                      placeholder="(11) 3333-4444"
+                      value={externalPhone}
+                      onChange={(e) => setExternalPhone(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div>
+              <label htmlFor="transfer-reason" className="mb-1.5 block text-sm font-extrabold text-sky-950">
+                Motivo da transferência *
+              </label>
+              <input
+                id="transfer-reason"
+                className="aero-input"
+                placeholder="Ex: Necessidade de atendimento cardiológico / UTI indisponível"
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                required
+              />
+            </div>
+
+            <div>
+              <label htmlFor="transfer-notes" className="mb-1.5 block text-sm font-extrabold text-sky-950">
+                Observações clínicas para a equipe receptora
+              </label>
+              <textarea
+                id="transfer-notes"
+                rows={3}
+                className="aero-input resize-none"
+                placeholder="Sinais vitais, medicações administradas, orientações para o transporte..."
+                value={clinicalNotes}
+                onChange={(e) => setClinicalNotes(e.target.value)}
+              />
+            </div>
+
+            {error && (
+              <p className="rounded-2xl border border-rose-300 bg-rose-100/90 px-4 py-2.5 text-sm font-bold text-rose-700">
+                {error}
+              </p>
+            )}
+
+            <div className="flex justify-end gap-2 pt-2">
+              <button
+                type="button"
+                onClick={onClose}
+                className="aero-btn-glass rounded-full px-5 py-2.5 text-sm font-bold"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={submitting || (usesSystem && otherClinics.length === 0)}
+                className="aero-btn inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-bold"
+              >
+                {submitting ? (
+                  <Loader2 className="relative z-10 h-4 w-4 animate-spin" />
+                ) : (
+                  <ArrowLeftRight className="relative z-10 h-4 w-4" />
+                )}
+                <span className="relative z-10">Confirmar Transferência</span>
+              </button>
+            </div>
+          </form>
+        )}
+      </div>
+    </div>
+  );
+}

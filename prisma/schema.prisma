@@ -8,36 +8,75 @@ datasource db {
 }
 
 model Patient {
-  id                String    @id @default(uuid())
-  ticket            String    @db.VarChar(20)
-  name              String    @db.VarChar(255)
-  age               Int
-  document          String    @db.VarChar(50)
-  symptoms          String    @db.Text
-  painLevel         Int
-  hasFever          Boolean
-  hasBreathingIssue Boolean
-  hasChestPain      Boolean
-  priority          String    @db.VarChar(20) // alto, medio, baixo
-  status            String    @default("waiting") @db.VarChar(20) // aguardando, em_atendimento, finalizado
-  arrivedAt         DateTime  @default(now())
-  calledAt          DateTime?
-  finishedAt        DateTime?
+  id                     String            @id @default(uuid())
+  ticket                 String            @db.VarChar(20)
+  name                   String            @db.VarChar(255)
+  age                    Int
+  document               String            @db.VarChar(50)
+  symptoms               String            @db.Text
+  painLevel              Int
+  hasFever               Boolean
+  hasBreathingIssue      Boolean
+  hasChestPain           Boolean
+  priority               String            @db.VarChar(20) // high, medium, low
+  status                 String            @default("waiting") @db.VarChar(20) // waiting, in_service, done, transferred
+  arrivedAt              DateTime          @default(now())
+  calledAt               DateTime?
+  finishedAt             DateTime?
+  clinicId               String?
+  clinic                 Clinic?           @relation(fields: [clinicId], references: [id], onDelete: SetNull)
+  lgpdConsent            Boolean           @default(false)
+  truthfulnessConsent    Boolean           @default(false)
+  exclusiveSystemConsent Boolean           @default(false)
+  termsAcceptedAt        DateTime?
+  transfers              PatientTransfer[]
 
+  @@index([clinicId])
   @@map("patients")
 }
 
 model Clinic {
-  id        String   @id @default(uuid())
-  name      String   @db.VarChar(255)
-  cnpj      String?  @db.VarChar(20)
-  phone     String?  @db.VarChar(30)
-  address   String?  @db.VarChar(255)
-  plan      String   @default("free") @db.VarChar(50)
-  createdAt DateTime @default(now())
-  users     User[]
+  id                   String            @id @default(uuid())
+  name                 String            @db.VarChar(255)
+  cnpj                 String?           @db.VarChar(20)
+  phone                String?           @db.VarChar(30)
+  address              String?           @db.VarChar(255)
+  plan                 String            @default("free") @db.VarChar(50)
+  termsAccepted        Boolean           @default(false)
+  exclusiveUseAccepted Boolean           @default(false)
+  termsAcceptedAt      DateTime?
+  createdAt            DateTime          @default(now())
+  users                User[]
+  patients             Patient[]
+  transfersOut         PatientTransfer[] @relation("TransferFromClinic")
+  transfersIn          PatientTransfer[] @relation("TransferToClinic")
 
   @@map("clinics")
+}
+
+model PatientTransfer {
+  id                      String   @id @default(uuid())
+  protocol                String   @unique @db.VarChar(30)
+  patientId               String
+  patient                 Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  fromClinicId            String?
+  fromClinic              Clinic?  @relation("TransferFromClinic", fields: [fromClinicId], references: [id], onDelete: SetNull)
+  toClinicId              String?
+  toClinic                Clinic?  @relation("TransferToClinic", fields: [toClinicId], references: [id], onDelete: SetNull)
+  destinationUsesSystem   Boolean
+  externalHospitalName    String?  @db.VarChar(255)
+  externalHospitalAddress String?  @db.VarChar(255)
+  externalHospitalPhone   String?  @db.VarChar(30)
+  reason                  String   @db.Text
+  clinicalNotes           String?  @db.Text
+  transferredBy           String?  @db.VarChar(255)
+  status                  String   @default("completed") @db.VarChar(30) // completed, received
+  createdAt               DateTime @default(now())
+
+  @@index([patientId])
+  @@index([fromClinicId])
+  @@index([toClinicId])
+  @@map("patient_transfers")
 }
 
 model User {
